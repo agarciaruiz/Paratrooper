@@ -170,7 +170,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\ball.hpp" />
     <ClInclude Include="..\src\ending_screen.hpp" />
     <ClInclude Include="..\src\game_screen.hpp" />
     <ClInclude Include="..\src\logo_screen.hpp" />
@@ -180,7 +179,6 @@
     <ClInclude Include="..\src\options_screen.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\brick.hpp" />
     <ClCompile Include="..\src\player.hpp" />
     <ClCompile Include="..\src\paratrooper.cpp" />
   </ItemGroup>

@@ -2,46 +2,60 @@
 #define PLAYER_H
 #define PLAYER_LIFES             5
 
-
 #include "raylib.h"
 #include "screen.hpp"
+#include "rlgl.h"
 
 class Player {
 private:
-    Vector2 _position;
-    Vector2 _speed;
-    Vector2 _size;
-    Rectangle _bounds;
+    Vector2 _basePosition;
+    Vector2 _turretPosition;
+    float _turretRotation;
+    float _rotationSpeed;
     int _lifes;
+    float maxAngle = 70;
 
-    Texture2D _texture;
+    Texture2D _bodyTexture;
+    Texture2D _turretTexture;
 
 public:
-    Vector2 Position () const { return _position; }
-    Vector2 Speed () const { return _speed; }
-    Vector2 Size () const { return _size; }
-    Rectangle Bounds () const { return _bounds; }
+    Vector2 BasePosition () const { return _basePosition; }
+    Vector2 TurretPosition () const { return _turretPosition; }
+    float TurretRotation () const { return _turretRotation; }
+    float RotSpeed () const { return _rotationSpeed; }
     int Lifes () const { return _lifes; }
-    Texture2D Texture() const { return _texture; }
+
+    Texture2D BodyTexture() const { return _bodyTexture; }
+    Texture2D TurretTexture() const { return _turretTexture; }
 
 
-    void Init(Vector2 position, Vector2 speed, Vector2 size, int lifes)
+    void Init(Vector2 basePosition, float rotationSpeed, int lifes)
     {
-        this->_position = position;
-        this->_speed = speed;
-        this->_size = size;
+        _bodyTexture = LoadTexture("resources/Player/PlayerBody.png");
+        _turretTexture = LoadTexture("resources/Player/Turret.png");
+
+        this->_basePosition = basePosition;
+        _basePosition.x -= (float)_bodyTexture.width / 2;
+        _basePosition.y -= (float)_bodyTexture.height;
+
+        this->_turretPosition = basePosition;
+        _turretPosition.x -= (float)_turretTexture.width / 2;
+        _turretPosition.y -= (float)_turretTexture.height + (float)_bodyTexture.height;
+
+        this->_rotationSpeed = rotationSpeed;
+
         this->_lifes = lifes;
-        _texture = LoadTexture("resources/paddle.png");
     }
 
-    void MoveX(int direction) 
+    void Rotate(int direction) 
     {
-        if ((_position.x) <= 0) _position.x = 0;
-        if ((_position.x + _size.x) >= SCR_WIDTH) _position.x = SCR_WIDTH - _size.x;
+        if (_turretRotation >= maxAngle)
+            _turretRotation = maxAngle;
 
-        _bounds = Rectangle{ _position.x, _position.y, _size.x, _size.y };
+        if (_turretRotation <= -maxAngle)
+            _turretRotation = -maxAngle;
 
-        _position.x += _speed.x * direction;
+        _turretRotation += direction * _rotationSpeed;
     }
 
     void GetDamage() 
@@ -55,7 +69,8 @@ public:
     }
 
     void DeleteTexture() {
-        UnloadTexture(_texture);
+        UnloadTexture(_bodyTexture);
+        UnloadTexture(_turretTexture);
     }
 };
 

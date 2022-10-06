@@ -20,9 +20,11 @@ public:
 		instructions1 = "Do not allow enemy paratroopers to land";
 		instructions2 = "on either side of your gun baseself. If seven";
 		instructions3 = "paratroopers land on your base you loose";
+
 		instructions4 = "Press space to shoot";
 		instructions5 = "Press [A] to move the turret counterclockwise";
 		instructions6 = "Press [D] to move the turret clockwise";
+		
 		instructions7 = "Press [O] to return to Title Screen";
 
 		framesCounter = 0;

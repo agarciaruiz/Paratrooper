@@ -30,18 +30,12 @@
     <ClInclude Include="..\src\logo_screen.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\ball.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\paratrooper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\player.hpp">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\brick.hpp">
       <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>

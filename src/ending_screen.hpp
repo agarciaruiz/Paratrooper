@@ -11,10 +11,10 @@ public:
 
 		// Press enter or tap to return to TITLE screen
 		if (IsKeyPressed(KEY_ENTER))
-		{
 			finishScreen = 2;
-			//PlaySound(fxCoin);
-		}
+
+		if (IsKeyPressed(KEY_O))
+			finishScreen = 3;
 	}
 
 	void DrawScreen() override 
