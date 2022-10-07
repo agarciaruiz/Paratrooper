@@ -179,6 +179,7 @@
     <ClInclude Include="..\src\paratrooper.hpp" />
     <ClInclude Include="..\src\title_screen.hpp" />
     <ClInclude Include="..\src\options_screen.hpp" />
+    <ClInclude Include="..\src\trooper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\player.hpp" />
