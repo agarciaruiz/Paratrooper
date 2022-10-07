@@ -30,7 +30,7 @@ private:
 	Texture2D rightCopterTexture {0};
 
 public:
-	void InitScreen() override 
+	void GameScreen::Init() override 
 	{
 		SetRandomSeed(time(NULL));
 		framesCounter = 0;
@@ -60,7 +60,7 @@ public:
 		}
 	}
 
-	void UpdateScreen() override
+	void GameScreen::Update() override
 	{
 		if (IsKeyPressed('P')) gamePaused = !gamePaused;    // Pause button logic
 
@@ -102,7 +102,7 @@ public:
 		}
 	}
 
-	void FindUnusedCopter()
+	void GameScreen::FindUnusedCopter()
 	{
 		if(attempts == 2)
 			for (int i = 0; i < REUSABLE_COPTERS; i++)
@@ -131,7 +131,7 @@ public:
 		}
 	}
 
-	void DrawScreen() override
+	void GameScreen::Draw() override
 	{
 		player.Draw();
 
@@ -144,9 +144,9 @@ public:
 		if (gamePaused) DrawText("GAME PAUSED", SCR_WIDTH / 2 - MeasureText("GAME PAUSED", 40) / 2, SCR_HEIGHT / 2 + 60, 40, GRAY);
 	}
 
-	void UnloadScreen() override {}
+	void GameScreen::Unload() override {}
 
-	void DeleteTextures()
+	void GameScreen::DeleteTextures()
 	{
 		player.DeleteTexture();
 	}

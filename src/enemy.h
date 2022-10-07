@@ -13,21 +13,21 @@ public:
 	Vector2 Position() const{ return _position; }
 	bool IsAlive() const { return _isAlive; }
 
-	virtual void Init(Vector2 position, float speed, Texture2D texture)
+	virtual void Enemy::Init(Vector2 position, float speed, Texture2D texture)
 	{
 		this->_position = position;
 		this->_speed = speed;
 		this->_texture = texture;
 	}
 
-	virtual void Spawn()
+	virtual void Enemy::Spawn()
 	{
 		_isAlive = true;
 	}
 
-	virtual void Move(){}
+	virtual void Enemy::Move(){}
 
-	virtual void Destroy()
+	virtual void Enemy::Destroy()
 	{
 		_isAlive = false;
 	}

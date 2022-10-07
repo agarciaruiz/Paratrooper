@@ -5,7 +5,7 @@
 class EndingScreen : public Screen {
 private:
 public:
-	void UpdateScreen() override 
+	void EndingScreen::Update() override 
 	{
 		framesCounter++;
 
@@ -17,7 +17,7 @@ public:
 			finishScreen = 3;
 	}
 
-	void DrawScreen() override 
+	void EndingScreen::Draw() override
 	{
 		DrawTextEx(font, "GAME FINISHED", Vector2 { 80, 100 }, 80, 6, MAROON);
 

@@ -23,7 +23,7 @@ int main(void)
     currentScreen = LOGO;
 
     //InitLogoScreen();
-    logoScreen->InitScreen();
+    logoScreen->Init();
 
     SetTargetFPS(60);       // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -39,11 +39,11 @@ int main(void)
     // Unload current screen data before closing
     switch (currentScreen)
     {
-        case LOGO: logoScreen->UnloadScreen(); break;
-        case TITLE: titleScreen->UnloadScreen(); break;
-        case OPTIONS: optionsScreen->UnloadScreen(); break;
-        case GAMEPLAY: gameScreen->UnloadScreen(); break;
-        case ENDING: endingScreen->UnloadScreen(); break;
+        case LOGO: logoScreen->Unload(); break;
+        case TITLE: titleScreen->Unload(); break;
+        case OPTIONS: optionsScreen->Unload(); break;
+        case GAMEPLAY: gameScreen->Unload(); break;
+        case ENDING: endingScreen->Unload(); break;
         default: break;
     }
 
@@ -74,22 +74,22 @@ static void ChangeToScreen(Screens screen)
     // Unload current screen
     switch (currentScreen)
     {
-        case LOGO: logoScreen->UnloadScreen(); break;
-        case TITLE: titleScreen->UnloadScreen(); break;
-        case OPTIONS: optionsScreen->UnloadScreen(); break;
-        case GAMEPLAY: gameScreen->UnloadScreen(); break;
-        case ENDING: endingScreen->UnloadScreen(); break;
+        case LOGO: logoScreen->Unload(); break;
+        case TITLE: titleScreen->Unload(); break;
+        case OPTIONS: optionsScreen->Unload(); break;
+        case GAMEPLAY: gameScreen->Unload(); break;
+        case ENDING: endingScreen->Unload(); break;
         default: break;
     }
 
     // Init next screen
     switch (screen)
     {
-        case LOGO: logoScreen->InitScreen(); break;
-        case TITLE: titleScreen->InitScreen(); break;
-        case OPTIONS: optionsScreen->InitScreen(); break;
-        case GAMEPLAY: gameScreen->InitScreen(); break;
-        case ENDING: endingScreen->InitScreen(); break;
+        case LOGO: logoScreen->Init(); break;
+        case TITLE: titleScreen->Init(); break;
+        case OPTIONS: optionsScreen->Init(); break;
+        case GAMEPLAY: gameScreen->Init(); break;
+        case ENDING: endingScreen->Init(); break;
         default: break;
     }
 
@@ -122,22 +122,22 @@ static void UpdateTransition(void)
             // Unload current screen
             switch (transFromScreen)
             {
-                case LOGO: logoScreen->UnloadScreen(); break;
-                case TITLE: titleScreen->UnloadScreen(); break;
-                case OPTIONS: optionsScreen->UnloadScreen(); break;
-                case GAMEPLAY: gameScreen->UnloadScreen(); break;
-                case ENDING: endingScreen->UnloadScreen(); break;
+                case LOGO: logoScreen->Unload(); break;
+                case TITLE: titleScreen->Unload(); break;
+                case OPTIONS: optionsScreen->Unload(); break;
+                case GAMEPLAY: gameScreen->Unload(); break;
+                case ENDING: endingScreen->Unload(); break;
                 default: break;
             }
 
             // Load next screen
             switch (transToScreen)
             {
-                case LOGO: logoScreen->InitScreen(); break;
-                case TITLE: titleScreen->InitScreen(); break;
-                case OPTIONS: optionsScreen->InitScreen(); break;
-                case GAMEPLAY: gameScreen->InitScreen(); break;
-                case ENDING: endingScreen->InitScreen(); break;
+                case LOGO: logoScreen->Init(); break;
+                case TITLE: titleScreen->Init(); break;
+                case OPTIONS: optionsScreen->Init(); break;
+                case GAMEPLAY: gameScreen->Init(); break;
+                case ENDING: endingScreen->Init(); break;
                 default: break;
             }
 
@@ -181,14 +181,14 @@ static void UpdateDrawFrame()
         {
             case LOGO:
             {
-                logoScreen->UpdateScreen();
+                logoScreen->Update();
 
                 if (logoScreen->FinishScreen()) TransitionToScreen(TITLE);
 
             } break;
             case TITLE:
             {
-                titleScreen->UpdateScreen();
+                titleScreen->Update();
 
                 if (titleScreen->FinishScreen() == 3) TransitionToScreen(OPTIONS);
                 else if (titleScreen->FinishScreen() == 4) TransitionToScreen(GAMEPLAY);
@@ -196,14 +196,14 @@ static void UpdateDrawFrame()
             } break;
             case OPTIONS:
             {
-                optionsScreen->UpdateScreen();
+                optionsScreen->Update();
 
                 if (optionsScreen->FinishScreen()) TransitionToScreen(TITLE);
 
             } break;
             case GAMEPLAY:
             {
-                gameScreen->UpdateScreen();
+                gameScreen->Update();
 
                 if (gameScreen->FinishScreen() == 5) TransitionToScreen(ENDING);
                 //else if (FinishGameplayScreen() == 3) TransitionToScreen(TITLE);
@@ -211,7 +211,7 @@ static void UpdateDrawFrame()
             } break;
             case ENDING:
             {
-                endingScreen->UpdateScreen();
+                endingScreen->Update();
 
                 if (endingScreen->FinishScreen() == 2) TransitionToScreen(TITLE);
 
@@ -230,11 +230,11 @@ static void UpdateDrawFrame()
 
         switch(currentScreen)
         {
-            case LOGO: logoScreen->DrawScreen(); break;
-            case TITLE: titleScreen->DrawScreen(); break;
-            case OPTIONS: optionsScreen->DrawScreen(); break;
-            case GAMEPLAY: gameScreen->DrawScreen(); break;
-            case ENDING: endingScreen->DrawScreen(); break;
+            case LOGO: logoScreen->Draw(); break;
+            case TITLE: titleScreen->Draw(); break;
+            case OPTIONS: optionsScreen->Draw(); break;
+            case GAMEPLAY: gameScreen->Draw(); break;
+            case ENDING: endingScreen->Draw(); break;
             default: break;
         }
 

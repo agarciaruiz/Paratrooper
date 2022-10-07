@@ -7,14 +7,14 @@ private:
 	Texture2D texTitle;
 
 public:
-	void InitScreen() override 
+	void TitleScreen::Init() override 
 	{
 		texTitle = LoadTexture("resources/Menus/Title.png");
 		framesCounter = 0;
 		finishScreen = 0;
 	}
 
-	void UpdateScreen() override 
+	void TitleScreen::Update() override
 	{
 		framesCounter++;
 		// Press enter to change to GAMEPLAY screen
@@ -25,7 +25,7 @@ public:
 			finishScreen = 3; // OPTIONS
 	}
 
-	void DrawScreen() override 
+	void TitleScreen::Draw() override
 	{
 		// TODO: Draw TITLE screen here!
 		DrawTexture(texTitle, SCR_WIDTH / 2 - texTitle.width / 2, SCR_HEIGHT / 4 - texTitle.height / 2, WHITE);

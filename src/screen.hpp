@@ -15,17 +15,17 @@ protected:
 public:
 	int FinishScreen() const { return finishScreen; }
 
-	virtual void InitScreen()
+	virtual void Screen::Init()
 	{    
 		framesCounter = 0;
 		finishScreen = 0;
 		font = LoadFont("resources/mecha.png");
 	}
 
-	virtual void UpdateScreen(){}
-	virtual void DrawScreen(){}
+	virtual void Screen::Update(){}
+	virtual void Screen::Draw(){}
 
-	virtual void UnloadScreen()
+	virtual void Screen::Unload()
 	{
 		UnloadFont(font);
 	}

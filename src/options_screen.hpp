@@ -15,7 +15,7 @@ private:
 
 	char* instructions7;
 public:
-	void InitScreen() override 
+	void OptionsScreen::Init() override 
 	{
 		instructions1 = "Do not allow enemy paratroopers to land";
 		instructions2 = "on either side of your gun baseself. If seven";
@@ -30,7 +30,7 @@ public:
 		framesCounter = 0;
 		finishScreen = 0;
 	}
-	void UpdateScreen() override 
+	void OptionsScreen::Update() override
 	{
 		framesCounter++;
 
@@ -38,7 +38,7 @@ public:
 			finishScreen = 2;
 	}
 
-	void DrawScreen() override 
+	void OptionsScreen::Draw() override
 	{
 		DrawText(instructions1, GetScreenWidth() / 2 - MeasureText(instructions1, 20) / 2, GetScreenHeight() / 4 - 20, 20, DARKGRAY);
 		DrawText(instructions2, GetScreenWidth() / 2 - MeasureText(instructions2, 20) / 2, GetScreenHeight() / 4, 20, DARKGRAY);
@@ -51,8 +51,6 @@ public:
 		if ((framesCounter / 30) % 2 == 0)
 			DrawText(instructions7, GetScreenWidth() / 2 - MeasureText(instructions7, 20) / 2, GetScreenHeight() / 4 + 160, 20, DARKGRAY);
 	}
-
-	void UnloadScreen() override {}
 };
 
 #endif

@@ -29,7 +29,7 @@ public:
     Texture2D TurretTexture() const { return _turretTexture; }
 
 
-    void Init(Vector2 basePosition, float rotationSpeed, int lifes)
+    void Player::Init(Vector2 basePosition, float rotationSpeed, int lifes)
     {
         _bodyTexture = LoadTexture("resources/Player/PlayerBody.png");
         _turretTexture = LoadTexture("resources/Player/Turret.png");
@@ -47,7 +47,7 @@ public:
         this->_lifes = lifes;
     }
 
-    void Rotate(int direction) 
+    void Player::Rotate(int direction) 
     {
         if (_turretRotation >= maxAngle)
             _turretRotation = maxAngle;
@@ -59,7 +59,7 @@ public:
     }
 
 
-    void Draw()
+    void Player::Draw()
     {
         // Draw turret
         Rectangle turretBbox = Rectangle{ 0, 0, (float)_turretTexture.width, (float)_turretTexture.height };
@@ -71,17 +71,17 @@ public:
         DrawTextureEx(_bodyTexture, _basePosition, 0.0f, 1.0f, WHITE);  
     }
 
-    void GetDamage() 
+    void Player::GetDamage() 
     {
         _lifes--;
     }
 
-    void ResetLifes()
+    void Player::ResetLifes()
     {
         _lifes = 5;
     }
 
-    void DeleteTexture() {
+    void Player::DeleteTexture() {
         UnloadTexture(_bodyTexture);
         UnloadTexture(_turretTexture);
     }

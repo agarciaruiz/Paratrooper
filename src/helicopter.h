@@ -9,7 +9,7 @@ private:
 public:
 	bool IsLeftSide() const { return _isLeftSide; }
 	
-	void Init(Vector2 position, float speed, Texture2D texture) override
+	void Helicopter::Init(Vector2 position, float speed, Texture2D texture) override
 	{
 		this->_position = position;
 		this->_speed = speed;
@@ -19,7 +19,7 @@ public:
 			_isLeftSide = true;
 	}
 
-	void Move() override
+	void Helicopter::Move() override
 	{
 		if(_isLeftSide)
 			this->_position.x += this->_speed;
@@ -27,12 +27,12 @@ public:
 			this->_position.x -= this->_speed;
 	}
 
-	void Deactivate()
+	void Helicopter::Deactivate()
 	{
 		_isAlive = false;
 	}
 
-	bool IsOutOfScreen()
+	bool Helicopter::IsOutOfScreen()
 	{
 		if (_isLeftSide && _position.x >= SCR_WIDTH)
 		{
@@ -45,7 +45,7 @@ public:
 		return false;
 	}
 
-	void Draw()
+	void Helicopter::Draw()
 	{
 		DrawTextureEx(_texture, _position, 0.0f, 1.0f, WHITE);
 	}

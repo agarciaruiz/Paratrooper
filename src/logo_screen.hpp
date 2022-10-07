@@ -21,7 +21,7 @@ private:
 
 public:
 
-	void InitScreen() override
+	void LogoScreen::Init() override
 	{
 		finishScreen = 0;
 		framesCounter = 0;
@@ -40,7 +40,7 @@ public:
 		texLogo = LoadTexture("resources/Menus/uoc.png");
 	}
 
-	void UpdateScreen() override
+	void LogoScreen::Update() override
 	{
 		framesCounter++;
 
@@ -51,12 +51,12 @@ public:
 		}
 	}
 
-	void DrawScreen() override
+	void LogoScreen::Draw() override
 	{
 		DrawTexture(texLogo, SCR_WIDTH/2 - texLogo.width/2, SCR_HEIGHT/2 - texLogo.height/2, WHITE);
 	}
 
-	void UnloadScreen() override {}
+	void LogoScreen::Unload() override {}
 
 };
 #endif // !LOGO_SCREEN_H
