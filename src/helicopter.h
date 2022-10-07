@@ -7,7 +7,7 @@ class Helicopter : public Enemy
 {
 private:
 	bool _isLeftSide = false;
-	Trooper _trooper;
+	//Trooper _trooper;
 	float _timer = 0;
 	float _dropTime = 0;
 public:
@@ -18,10 +18,11 @@ public:
 		this->_position = position;
 		this->_speed = speed;
 		this->_texture = texture;
-		_trooper.Init(_position);
-		_dropTime = GetRandomValue(1, 3);
+		//_trooper.Init(_position);
+		//_dropTime = GetRandomValue(1, 3);
 		if (position.x == 0)
 			_isLeftSide = true;
+		_isAlive = true;
 	}
 
 	void Helicopter::Move() override
@@ -31,7 +32,7 @@ public:
 		else
 			_position.x -= _speed;
 
-		if (!_trooper.IsFalling() && !_trooper.IsGrounded())
+		/*if (!_trooper.IsFalling() && !_trooper.IsGrounded())
 			_trooper.FollowHelicopter(_position);
 		else if(!_trooper.IsGrounded())
 			_trooper.Fall();
@@ -43,7 +44,7 @@ public:
 			_trooper.Spawn();
 			_timer = 0;
 			_dropTime = GetRandomValue(1, 3);
-		}
+		}*/
 
 	}
 
@@ -68,8 +69,8 @@ public:
 	void Helicopter::Draw()
 	{
 		// MUST FIND PLACE TO UNLOAD THIS TEXTURE
-		if(_trooper.IsFalling() || _trooper.IsGrounded())
-			DrawTextureEx(_trooper.Texture(), _trooper.Position(), 0.0f, 1.0f, WHITE);
+		/*if (_trooper.IsFalling() || _trooper.IsGrounded())
+			DrawTextureEx(_trooper.Texture(), _trooper.Position(), 0.0f, 1.0f, WHITE);*/
 		DrawTextureEx(_texture, _position, 0.0f, 1.0f, WHITE);
 	}
 };

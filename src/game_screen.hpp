@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <time.h>
+#include <vector>
 #include "screen.hpp"
 #include "player.hpp"
 #include "helicopter.h"
@@ -13,7 +14,7 @@ class GameScreen : public Screen {
 private:
 	bool gamePaused = false;
 	Player player;
-	Helicopter helicopters[REUSABLE_COPTERS];
+	std::vector<Helicopter*> helicopters = {};
 
 	Vector2 playerPos = Vector2{ SCR_WIDTH / 2 , SCR_HEIGHT};
 	float rotationSpeed = 5.0f;
@@ -29,6 +30,24 @@ private:
 	Texture2D leftCopterTexture = {0};
 	Texture2D rightCopterTexture {0};
 
+	float randomSide()
+	{
+		srand(time(NULL));
+		int r = rand() % 2;
+		if (r == 0)
+			return 0;
+		else
+			return SCR_WIDTH;
+	}
+
+	Texture2D GetTextureFromSide(float side)
+	{
+		if (side == 0)
+			return leftCopterTexture;
+		else
+			return rightCopterTexture;
+	}
+
 	void GameScreen::RotatePlayer()
 	{
 		int dir;
@@ -41,63 +60,23 @@ private:
 		player.Rotate(dir);
 	}
 
-	void GameScreen::SpawnHelicopters() 
+	Helicopter* GameScreen::SpawnHelicopter() 
 	{
-		timer += GetFrameTime();
-		if (timer >= helicopterSpawnTime)
-		{
-			copterFound = false;
-			FindUnusedCopter();
-			helicopterSpawnTime = GetRandomValue(2, 4);
-			timer = 0;
-		}
+		Helicopter *helicopter = new Helicopter();
+
+		float randomHeight = GetRandomValue(SCR_HEIGHT / 3, SCR_HEIGHT / 8);
+		float speed = GetRandomValue(3, 4);
+		Vector2 spawnPos = Vector2{ randomSide(), randomHeight };
+		
+		helicopter->Init(spawnPos, speed, GetTextureFromSide(spawnPos.x));
+
+		return helicopter;
 	}
 
-	void GameScreen::MoveHelicopters()
+	void GameScreen::MoveHelicopter(Helicopter *helicopter)
 	{
-		for (int i = 0; i < REUSABLE_COPTERS; i++)
-		{
-			if (helicopters[i].IsAlive())
-			{
-				helicopters[i].Move();
-			}
-
-			if (helicopters[i].IsOutOfScreen())
-			{
-				helicopters[i].Deactivate();
-			}
-		}
+		helicopter->Move();
 	}
-
-	void GameScreen::FindUnusedCopter()
-	{
-		if (attempts == 2)
-			for (int i = 0; i < REUSABLE_COPTERS; i++)
-			{
-				if (!helicopters[i].IsAlive())
-				{
-					helicopters[i].Spawn();
-					attempts = 0;
-					break;
-				}
-			}
-
-		if (!copterFound)
-		{
-			attempts++;
-			randIndex = rand() % 8;
-			if (!helicopters[randIndex].IsAlive())
-			{
-				helicopters[randIndex].Spawn();
-				copterFound = true;
-			}
-		}
-		else
-		{
-			FindUnusedCopter();
-		}
-	}
-
 
 public:
 	void GameScreen::Init() override 
@@ -111,23 +90,6 @@ public:
 		rightCopterTexture = LoadTexture("resources/Enemies/Helicopter_Right.png");
 
 		player.Init(playerPos, rotationSpeed, playerLifes);
-
-		for (int i = 0; i < REUSABLE_COPTERS; i++) 
-		{
-			float randomHeight = GetRandomValue(SCR_HEIGHT / 3, SCR_HEIGHT / 8);
-			float speed = GetRandomValue(3, 4);
-
-			if (i<4)
-			{
-				Vector2 spawnPos = Vector2{ 0, randomHeight };
-				helicopters[i].Init(spawnPos, speed, leftCopterTexture);
-			}
-			else
-			{
-				Vector2 spawnPos = Vector2{ SCR_WIDTH, randomHeight};
-				helicopters[i].Init(spawnPos, speed, rightCopterTexture);
-			}
-		}
 	}
 
 	void GameScreen::Update() override
@@ -143,9 +105,25 @@ public:
 				player.Shoot();
 
 			// Helicopter Spawn
-			SpawnHelicopters();
-			// Helicopter Move && Deactivate
-			MoveHelicopters();
+			timer += GetFrameTime();
+			if (timer >= helicopterSpawnTime)
+			{
+				helicopters.push_back(SpawnHelicopter());
+				helicopterSpawnTime = GetRandomValue(3, 5);
+				timer = 0;
+			}
+
+			// Helicopter Move && Delete
+			for (int i = 0; i < helicopters.size(); i++) 
+			{
+				if (!helicopters[i]->IsOutOfScreen())
+					helicopters[i]->Move();
+				else
+				{
+					delete(helicopters[i]);
+					helicopters.erase(std::remove(helicopters.begin(), helicopters.end(), helicopters[i]), helicopters.end());
+				}
+			}
 		}
 	}
 
@@ -153,10 +131,9 @@ public:
 	{
 		player.Draw();
 
-		for (int i = 0; i < REUSABLE_COPTERS; i++) 
+		for (int i = 0; i < helicopters.size(); i++)
 		{
-			if (helicopters[i].IsAlive())
-				helicopters[i].Draw();
+			helicopters[i]->Draw();
 		}
 
 		if (gamePaused) DrawText("GAME PAUSED", SCR_WIDTH / 2 - MeasureText("GAME PAUSED", 40) / 2, SCR_HEIGHT / 2 + 60, 40, GRAY);
@@ -167,8 +144,6 @@ public:
 		UnloadFont(font);
 		UnloadTexture(player.BodyTexture());
 		UnloadTexture(player.TurretTexture());
-		for (int i = 0; i < REUSABLE_COPTERS; i++)
-			UnloadTexture(helicopters[i].Texture());
 	}
 
 	void GameScreen::DeleteTextures()
