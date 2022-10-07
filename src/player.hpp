@@ -23,13 +23,29 @@ private:
     Texture2D _turretTexture;
     std::vector<Bullet*> bullets = {};
 
-    Bullet* SpawnBullet()
+    Bullet* Player::SpawnBullet()
     {
         Bullet* bullet = new Bullet();
         float radians = _turretRotation * (PI / 180);
         Vector2 direction = { sin(radians), cos(radians)};
         bullet->Init(_turretPosition, direction);
         return bullet;
+    }
+
+    void Player::Rotate(int direction)
+    {
+        if (_turretRotation >= maxAngle)
+            _turretRotation = maxAngle;
+
+        if (_turretRotation <= -maxAngle)
+            _turretRotation = -maxAngle;
+
+        _turretRotation += direction * _rotationSpeed;
+    }
+
+    void Player::Shoot()
+    {
+        bullets.push_back(SpawnBullet());
     }
 
 public:
@@ -61,7 +77,7 @@ public:
         this->_shootingTimer = 0;
     }
 
-    void Player::Update()
+    void Player::Update(std::vector<Helicopter*> helicopters)
     {
         int dir;
         if (IsKeyDown(KEY_A))
@@ -79,8 +95,9 @@ public:
             Shoot();
         }
 
-        for (int i = 0; i < bullets.size(); i++) {
-            bullets[i]->Update();
+        for (int i = 0; i < bullets.size(); i++) 
+        {
+            bullets[i]->Update(helicopters);
             if(bullets[i]->IsOutOfScreen() || bullets[i]->Hit())
             {
                 delete(bullets[i]);
@@ -89,37 +106,9 @@ public:
         }   
     }
 
-    void Player::Rotate(int direction) 
-    {
-        if (_turretRotation >= maxAngle)
-            _turretRotation = maxAngle;
-
-        if (_turretRotation <= -maxAngle)
-            _turretRotation = -maxAngle;
-
-        _turretRotation += direction * _rotationSpeed;
-    }
-
     void Player::GetDamage() 
     {
         _lifes--;
-    }
-
-    void Player::Shoot()
-    {
-        bullets.push_back(SpawnBullet());
-        //bullet->Draw();
-
-        /*for (int i = 0; i < bullets.size(); i++)
-        {
-            while (!bullets[i]->IsOutOfScreen() && !bullets[i]->Hit()) {
-                bullets[i]->Move();
-            }
-
-            //delete(bullets[i]);
-            //bullets.erase(std::remove(bullets.begin(), bullets.end(), bullets[i]), bullets.end());
-        }*/
-        
     }
 
     void Player::Draw()

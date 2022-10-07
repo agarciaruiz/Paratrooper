@@ -22,8 +22,9 @@ public:
 		_speed = 3;
 	}
 
-	void Bullet::Update()
+	void Bullet::Update(std::vector<Helicopter*> helicopters)
 	{
+		// if colision con helicoptero -> hit = true
 		_position.x += _direction.x * _speed;
 		_position.y -= _direction.y * _speed;
 	}

@@ -6,10 +6,16 @@
 class Helicopter : public Enemy 
 {
 private:
+	Rectangle _bounds;
 	bool _isLeftSide = false;
 	//Trooper _trooper;
 	float _timer = 0;
 	float _dropTime = 0;
+
+	Rectangle Helicopter::GetBounds()
+	{
+		return Rectangle{ _position.x, _position.y, (float)_texture.width, (float)_texture.height }
+	}
 public:
 	bool IsLeftSide() const { return _isLeftSide; }
 	
@@ -23,6 +29,7 @@ public:
 		if (position.x == 0)
 			_isLeftSide = true;
 		_isAlive = true;
+		_bounds = GetBounds();
 	}
 
 	void Helicopter::Move() override
@@ -31,6 +38,8 @@ public:
 			_position.x += _speed;
 		else
 			_position.x -= _speed;
+
+		_bounds = GetBounds();
 
 		/*if (!_trooper.IsFalling() && !_trooper.IsGrounded())
 			_trooper.FollowHelicopter(_position);

@@ -100,7 +100,7 @@ public:
 		// Press enter or tap to change to ENDING screen
 		if (!gamePaused)
 		{
-			player.Update();
+			player.Update(helicopters);
 
 			// Helicopter Spawn
 			timer += GetFrameTime();
