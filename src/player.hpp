@@ -58,6 +58,19 @@ public:
         _turretRotation += direction * _rotationSpeed;
     }
 
+
+    void Draw()
+    {
+        // Draw turret
+        Rectangle turretBbox = Rectangle{ 0, 0, (float)_turretTexture.width, (float)_turretTexture.height };
+        Rectangle destination = Rectangle{ SCR_WIDTH / 2, SCR_HEIGHT - (float)_bodyTexture.height + 5, (float)_turretTexture.width, (float)_turretTexture.height };
+        Vector2 origin = Vector2{ (float)_turretTexture.width / 2, (float)_turretTexture.height };
+        DrawTexturePro(_turretTexture, turretBbox, destination, origin, _turretRotation, WHITE);
+        
+        // Draw base
+        DrawTextureEx(_bodyTexture, _basePosition, 0.0f, 1.0f, WHITE);  
+    }
+
     void GetDamage() 
     {
         _lifes--;
