@@ -42,13 +42,13 @@
     <ClInclude Include="..\src\bullet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\player.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\paratrooper.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\player.hpp">
-      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

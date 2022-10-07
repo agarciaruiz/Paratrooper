@@ -176,6 +176,7 @@
     <ClInclude Include="..\src\game_screen.hpp" />
     <ClInclude Include="..\src\helicopter.h" />
     <ClInclude Include="..\src\logo_screen.hpp" />
+    <ClInclude Include="..\src\player.hpp" />
     <ClInclude Include="..\src\screen.hpp" />
     <ClInclude Include="..\src\paratrooper.hpp" />
     <ClInclude Include="..\src\title_screen.hpp" />
@@ -183,7 +184,6 @@
     <ClInclude Include="..\src\trooper.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\player.hpp" />
     <ClCompile Include="..\src\paratrooper.cpp" />
   </ItemGroup>
   <ItemGroup>

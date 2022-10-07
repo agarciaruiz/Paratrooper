@@ -25,7 +25,7 @@ public:
 	void Bullet::Update()
 	{
 		_position.x += _direction.x * _speed;
-		_position.y += _direction.y * _speed;
+		_position.y -= _direction.y * _speed;
 	}
 
 	bool Bullet::IsOutOfScreen()

@@ -27,7 +27,7 @@ private:
     {
         Bullet* bullet = new Bullet();
         float radians = _turretRotation * (PI / 180);
-        Vector2 direction = { cos(radians), sin(radians)};
+        Vector2 direction = { sin(radians), cos(radians)};
         bullet->Init(_turretPosition, direction);
         return bullet;
     }
