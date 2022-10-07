@@ -28,7 +28,6 @@ public:
     Texture2D BodyTexture() const { return _bodyTexture; }
     Texture2D TurretTexture() const { return _turretTexture; }
 
-
     void Player::Init(Vector2 basePosition, float rotationSpeed, int lifes)
     {
         _bodyTexture = LoadTexture("resources/Player/PlayerBody.png");
@@ -58,7 +57,6 @@ public:
         _turretRotation += direction * _rotationSpeed;
     }
 
-
     void Player::Draw()
     {
         // Draw turret
@@ -76,9 +74,8 @@ public:
         _lifes--;
     }
 
-    void Player::ResetLifes()
+    void Player::Shoot()
     {
-        _lifes = 5;
     }
 
     void Player::DeleteTexture() {
@@ -86,5 +83,4 @@ public:
         UnloadTexture(_turretTexture);
     }
 };
-
 #endif

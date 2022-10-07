@@ -29,6 +29,76 @@ private:
 	Texture2D leftCopterTexture = {0};
 	Texture2D rightCopterTexture {0};
 
+	void GameScreen::RotatePlayer()
+	{
+		int dir;
+		if (IsKeyDown(KEY_A))
+			dir = -1;
+		else if (IsKeyDown(KEY_D))
+			dir = 1;
+		else
+			dir = 0;
+		player.Rotate(dir);
+	}
+
+	void GameScreen::SpawnHelicopters() 
+	{
+		timer += GetFrameTime();
+		if (timer >= helicopterSpawnTime)
+		{
+			copterFound = false;
+			FindUnusedCopter();
+			helicopterSpawnTime = GetRandomValue(2, 4);
+			timer = 0;
+		}
+	}
+
+	void GameScreen::MoveHelicopters()
+	{
+		for (int i = 0; i < REUSABLE_COPTERS; i++)
+		{
+			if (helicopters[i].IsAlive())
+			{
+				helicopters[i].Move();
+			}
+
+			if (helicopters[i].IsOutOfScreen())
+			{
+				helicopters[i].Deactivate();
+			}
+		}
+	}
+
+	void GameScreen::FindUnusedCopter()
+	{
+		if (attempts == 2)
+			for (int i = 0; i < REUSABLE_COPTERS; i++)
+			{
+				if (!helicopters[i].IsAlive())
+				{
+					helicopters[i].Spawn();
+					attempts = 0;
+					break;
+				}
+			}
+
+		if (!copterFound)
+		{
+			attempts++;
+			randIndex = rand() % 8;
+			if (!helicopters[randIndex].IsAlive())
+			{
+				helicopters[randIndex].Spawn();
+				copterFound = true;
+			}
+		}
+		else
+		{
+			FindUnusedCopter();
+		}
+	}
+
+
 public:
 	void GameScreen::Init() override 
 	{
@@ -67,67 +137,15 @@ public:
 		// Press enter or tap to change to ENDING screen
 		if (!gamePaused)
 		{
-			int dir;
-			if (IsKeyDown(KEY_A))
-				dir = -1;
-			else if (IsKeyDown(KEY_D))
-				dir = 1;
-			else
-				dir = 0;
-			player.Rotate(dir);
+			// Player Input
+			RotatePlayer();
+			if (IsKeyPressed(KEY_SPACE))
+				player.Shoot();
 
 			// Helicopter Spawn
-			timer += GetFrameTime();
-			if(timer >= helicopterSpawnTime)
-			{
-				copterFound = false;
-				FindUnusedCopter();
-				helicopterSpawnTime = GetRandomValue(2, 4);
-				timer = 0;
-			}
-
+			SpawnHelicopters();
 			// Helicopter Move && Deactivate
-			for (int i = 0; i < REUSABLE_COPTERS; i++) 
-			{
-				if (helicopters[i].IsAlive()) 
-				{
-					helicopters[i].Move();
-				}
-
-				if (helicopters[i].IsOutOfScreen())
-				{
-					helicopters[i].Deactivate();
-				}
-			}
-		}
-	}
-
-	void GameScreen::FindUnusedCopter()
-	{
-		if(attempts == 2)
-			for (int i = 0; i < REUSABLE_COPTERS; i++)
-			{
-				if (!helicopters[i].IsAlive())
-				{
-					helicopters[i].Spawn();
-					attempts = 0;
-					break;
-				}
-			}
-
-		if(!copterFound) 
-		{
-			attempts++;
-			randIndex = rand() % 8;
-			if (!helicopters[randIndex].IsAlive())
-			{
-				helicopters[randIndex].Spawn();
-				copterFound = true;
-			}
-		}
-		else 
-		{
-			FindUnusedCopter();
+			MoveHelicopters();
 		}
 	}
 
@@ -144,11 +162,18 @@ public:
 		if (gamePaused) DrawText("GAME PAUSED", SCR_WIDTH / 2 - MeasureText("GAME PAUSED", 40) / 2, SCR_HEIGHT / 2 + 60, 40, GRAY);
 	}
 
-	void GameScreen::Unload() override {}
+	void GameScreen::Unload() override 
+	{
+		UnloadFont(font);
+		UnloadTexture(player.BodyTexture());
+		UnloadTexture(player.TurretTexture());
+		for (int i = 0; i < REUSABLE_COPTERS; i++)
+			UnloadTexture(helicopters[i].Texture());
+	}
 
 	void GameScreen::DeleteTextures()
 	{
-		player.DeleteTexture();
+		//player.DeleteTexture();
 	}
 };
 

@@ -11,6 +11,7 @@ protected:
 	bool _isAlive;
 public:
 	Vector2 Position() const{ return _position; }
+	Texture2D Texture() const { return _texture; }
 	bool IsAlive() const { return _isAlive; }
 
 	virtual void Enemy::Init(Vector2 position, float speed, Texture2D texture)
