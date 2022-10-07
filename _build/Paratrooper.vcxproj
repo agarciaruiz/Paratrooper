@@ -170,6 +170,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\bullet.h" />
     <ClInclude Include="..\src\ending_screen.hpp" />
     <ClInclude Include="..\src\enemy.h" />
     <ClInclude Include="..\src\game_screen.hpp" />

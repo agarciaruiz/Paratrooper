@@ -9,6 +9,7 @@
 #include "screen.hpp"
 #include "player.hpp"
 #include "helicopter.h"
+#include "bullet.h"
 
 class GameScreen : public Screen {
 private:
@@ -99,10 +100,7 @@ public:
 		// Press enter or tap to change to ENDING screen
 		if (!gamePaused)
 		{
-			// Player Input
-			RotatePlayer();
-			if (IsKeyPressed(KEY_SPACE))
-				player.Shoot();
+			player.Update();
 
 			// Helicopter Spawn
 			timer += GetFrameTime();

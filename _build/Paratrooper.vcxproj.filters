@@ -39,6 +39,9 @@
     <ClInclude Include="..\src\trooper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\bullet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\paratrooper.cpp">
