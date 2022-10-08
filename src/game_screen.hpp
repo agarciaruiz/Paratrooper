@@ -108,6 +108,7 @@ public:
 				if (helicopters[i]->IsAlive() || !helicopters[i]->IsOutOfScreen())
 				{
 					helicopters[i]->Move();
+					// TIMER NEEDS FIXING
 					trooperTimer += GetFrameTime();
 					if (helicopters[i]->_hasTrooper && trooperTimer >= helicopters[i]->SpawnTimeOut())
 					{
