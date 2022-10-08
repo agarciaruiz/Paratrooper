@@ -1,49 +1,80 @@
 #ifndef HELICOPTER_H
 #define HELICOPTER_H
-#include "enemy.h"
 #include "trooper.h"
 
-class Helicopter : public Enemy 
+class Helicopter
 {
 private:
+	// Helicopter vars
 	Rectangle _bounds;
-	bool _isLeftSide = false;
-	//Trooper _trooper;
-	float _dropTime = 0;
+	Vector2 _position;
+	Texture2D _texture;
+	float _speed;
+	bool _leftSided = false;
 	float _reloadTextureTimer = 0;
 	bool _reloadTexture = false;
+	bool _isAlive;
+
+	// Trooper vars
+	float _spawnTimeout = 0;
+	float _spawnTimer = 0;
 
 	Rectangle Helicopter::GetBounds()
 	{
 		return Rectangle{ _position.x, _position.y, (float)_texture.width, (float)_texture.height };
 	}
+
+	void RecenterTexture()
+	{
+		_position.x += _bounds.width/2 - _texture.width/2;
+		_position.x += _bounds.height/2 - _texture.height/2;
+	}
+
+	void SpawnTrooper()
+	{
+		_spawnTimer += GetFrameTime();
+		Vector2 newPos;
+		if (_spawnTimer >= _spawnTimeout)
+		{
+			_trooper->Spawn();
+			_spawnTimer = 0;
+			_spawnTimeout = GetRandomValue(1, 3);
+		}
+	}
+
 public:
-	bool IsLeftSide() const { return _isLeftSide; }
 	Rectangle Bounds() const { return _bounds; }
-	
-	void Helicopter::Init(Vector2 position, float speed, Texture2D texture) override
+	bool IsAlive() const { return _isAlive; }
+	Trooper* _trooper = new Trooper();
+
+	void Helicopter::Init(Vector2 position, float speed, Texture2D texture)
 	{
 		this->_position = position;
 		this->_speed = speed;
 		this->_texture = texture;
-		//_trooper.Init(_position);
-		//_dropTime = GetRandomValue(1, 3);
+		_trooper->Init(_position);
+		_spawnTimeout = GetRandomValue(1, 3);
 		if (position.x == 0)
-			_isLeftSide = true;
+			_leftSided = true;
 		_isAlive = true;
 		_bounds = GetBounds();
 	}
 
-	void Helicopter::Move() override
+	void Helicopter::Move()
 	{
 		if (_isAlive) 
 		{
-			if (_isLeftSide)
+			// If is left side, moove right
+			if (_leftSided)
 				_position.x += _speed;
 			else
 				_position.x -= _speed;
 
+			// Update bounds
 			_bounds = GetBounds();
+
+			// Trooper routine
+			SpawnTrooper();
 		}
 		else
 		{
@@ -52,20 +83,10 @@ public:
 				_reloadTexture = true;
 		}
 
-		/*if (!_trooper.IsFalling() && !_trooper.IsGrounded())
-			_trooper.FollowHelicopter(_position);
-		else if(!_trooper.IsGrounded())
-			_trooper.Fall();
-
-		_timer += GetFrameTime();
-		Vector2 newPos;
-		if (_timer >= _dropTime) 
-		{
-			_trooper.Spawn();
-			_timer = 0;
-			_dropTime = GetRandomValue(1, 3);
-		}*/
-
+		if (!_trooper->IsFalling())
+			_trooper->FollowHelicopter(_position);
+		else if (_trooper->IsGrounded())
+			_trooper->Fall();
 	}
 
 	void Helicopter::Deactivate()
@@ -75,11 +96,11 @@ public:
 
 	bool Helicopter::IsOutOfScreen()
 	{
-		if (_isLeftSide && _position.x >= SCR_WIDTH)
+		if (_leftSided && _position.x >= SCR_WIDTH)
 		{
 			return true;
 		}
-		else if (!_isLeftSide && _position.x <= 0)
+		else if (!_leftSided && _position.x <= 0)
 		{
 			return true;
 		}
@@ -89,15 +110,17 @@ public:
 	void Helicopter::Draw()
 	{
 		// MUST FIND PLACE TO UNLOAD THIS TEXTURE
-		/*if (_trooper.IsFalling() || _trooper.IsGrounded())
-			DrawTextureEx(_trooper.Texture(), _trooper.Position(), 0.0f, 1.0f, WHITE);*/
+		if (_trooper->IsFalling() || _trooper->IsGrounded())
+			_trooper->Draw();
+
 		if (_reloadTexture) return;
 		DrawTextureEx(_texture, _position, 0.0f, 1.0f, WHITE);
 	}
 
-	void Helicopter::Destroy() override 
+	void Helicopter::Destroy() 
 	{
 		_texture = LoadTexture("resources/Enemies/Dead.png");
+		RecenterTexture();
 		Deactivate();
 	}
 };

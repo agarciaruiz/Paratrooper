@@ -16,6 +16,7 @@ private:
 	bool gamePaused = false;
 	Player player;
 	std::vector<Helicopter*> helicopters = {};
+	std::vector<Trooper*> troopers {};
 
 	Vector2 playerPos = Vector2{ SCR_WIDTH / 2 , SCR_HEIGHT};
 	float rotationSpeed = 5.0f;
@@ -102,12 +103,27 @@ public:
 			// Helicopter Move && Delete
 			for (int i = 0; i < helicopters.size(); i++) 
 			{
-				if (!helicopters[i]->IsOutOfScreen())
+				if (helicopters[i]->IsAlive() || !helicopters[i]->IsOutOfScreen())
 					helicopters[i]->Move();
 				else
 				{
+					troopers.push_back(helicopters[i]->_trooper);
+					for(int j = 0; j < troopers.size(); j++)
+					{
+						troopers[j]->Update();
+					}
 					delete(helicopters[i]);
 					helicopters.erase(std::remove(helicopters.begin(), helicopters.end(), helicopters[i]), helicopters.end());
+				}
+			}
+
+			for (int i = 0; i < troopers.size(); i++)
+			{
+				// NOT FALLING CORRECTLY
+				if(!troopers[j]->IsAlive())
+				{
+					delete(troopers[i]);
+					troopers.erase(std::remove(troopers.begin(), troopers.end(), troopers[i]), troopers.end());
 				}
 			}
 		}
@@ -120,6 +136,12 @@ public:
 		for (int i = 0; i < helicopters.size(); i++)
 		{
 			helicopters[i]->Draw();
+		}
+
+		for (int j = 0; j < troopers.size(); j++)
+		{
+			if (troopers[j]->IsFalling() || troopers[j]->IsGrounded())
+				troopers[j]->Draw();
 		}
 
 		if (gamePaused) DrawText("GAME PAUSED", SCR_WIDTH / 2 - MeasureText("GAME PAUSED", 40) / 2, SCR_HEIGHT / 2 + 60, 40, GRAY);

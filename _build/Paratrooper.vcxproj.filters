@@ -30,12 +30,6 @@
     <ClInclude Include="..\src\logo_screen.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\enemy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\helicopter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\trooper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -43,6 +37,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\player.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\helicopter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
