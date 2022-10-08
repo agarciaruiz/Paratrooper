@@ -65,9 +65,12 @@ private:
 		return helicopter;
 	}
 
-	void GameScreen::MoveHelicopter(Helicopter *helicopter)
+	void GameScreen::SpawnTrooper(Helicopter* helicopter)
 	{
-		helicopter->Move();
+		Trooper trooper;
+		trooper.Init(helicopter->Position());
+		troopers.push_back(std::make_unique<Trooper>(trooper));
+		helicopter->DropTrooper();
 	}
 
 public:
@@ -107,20 +110,14 @@ public:
 			{
 				if (helicopters[i]->IsAlive() || !helicopters[i]->IsOutOfScreen())
 				{
-					helicopters[i]->Move();
-					// TIMER NEEDS FIXING
-					trooperTimer += GetFrameTime();
-					if (helicopters[i]->_hasTrooper && trooperTimer >= helicopters[i]->SpawnTimeOut())
+					if (helicopters[i]->HasTrooper() && helicopters[i]->TimeOut())
 					{
-						helicopters[i]->_hasTrooper = false;
-						Trooper trooper;
-						trooper.Init(helicopters[i]->Position());
-						troopers.push_back(std::make_unique<Trooper>(trooper));
-						trooperTimer = 0;
+						SpawnTrooper(helicopters[i]);
 					}
+					helicopters[i]->Move();
 				}
 				else
-				{					
+				{	
 					delete(helicopters[i]);
 					helicopters.erase(std::remove(helicopters.begin(), helicopters.end(), helicopters[i]), helicopters.end());
 				}
@@ -129,14 +126,12 @@ public:
 			// Update trooper
 			for (int i = 0; i < troopers.size(); i++)
 			{
-				// NOT FALLING CORRECTLY
 				if(troopers[i]->IsAlive())
 				{
 					troopers[i]->Update();
 				}
 				else
 				{
-					//delete(troopers[i]);
 					troopers.erase(std::remove(troopers.begin(), troopers.end(), troopers[i]), troopers.end());
 				}
 			}
@@ -165,11 +160,6 @@ public:
 		UnloadFont(font);
 		UnloadTexture(player.BodyTexture());
 		UnloadTexture(player.TurretTexture());
-	}
-
-	void GameScreen::DeleteTextures()
-	{
-		//player.DeleteTexture();
 	}
 };
 

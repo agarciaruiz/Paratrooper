@@ -50,7 +50,6 @@ int main(void)
     // Unload global data loaded
     UnloadMusicStream(music);
     UnloadSound(fxCoin);
-    gameScreen->DeleteTextures();
     delete logoScreen;
     delete titleScreen;
     delete optionsScreen;

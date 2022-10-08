@@ -7,9 +7,15 @@ private:
 	float _speed;
 	Vector2 _position;
 	Texture2D _texture;
+	Rectangle _bounds;
 	bool _isFalling;
 	bool _isGrounded;
 	bool _isAlive = true;
+
+	Rectangle Trooper::GetBounds()
+	{
+		return Rectangle{ _position.x, _position.y, (float)_texture.width, (float)_texture.height };
+	}
 
 public:
 	bool IsFalling() const { return _isFalling; }
@@ -17,6 +23,7 @@ public:
 	bool IsAlive() const { return _isAlive; }
 	Texture2D Texture() const { return _texture; }
 	Vector2 Position() const { return _position; }
+	Rectangle Bounds() const { return _bounds; }
 
 	void Trooper::Init(Vector2 position)
 	{
@@ -25,6 +32,7 @@ public:
 		this->_texture = LoadTexture("resources/Enemies/Soldier.png");
 		this->_isFalling = true;
 		this->_isGrounded = false;
+		this->_bounds = GetBounds();
 	}
 
 	void Trooper::FollowHelicopter(Vector2 position)

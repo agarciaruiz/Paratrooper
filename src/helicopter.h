@@ -11,13 +11,16 @@ private:
 	Texture2D _texture;
 	float _speed;
 	bool _leftSided = false;
-	float _reloadTextureTimer = 0;
-	bool _reloadTexture = false;
 	bool _isAlive;
 
+	float _reloadTextureTimer = 0;
+	bool _reloadTexture = false;
+
 	// Trooper vars
-	float _spawnTimeout = 0;
+	float _spawnTimeout;
 	float _spawnTimer = 0;
+	bool _timeOut = false;
+	bool _hasTrooper = true;
 
 	Rectangle Helicopter::GetBounds()
 	{
@@ -30,32 +33,19 @@ private:
 		_position.x += _bounds.height/2 - _texture.height/2;
 	}
 
-	void SpawnTrooper()
-	{
-		_spawnTimer += GetFrameTime();
-		Vector2 newPos;
-		if (_spawnTimer >= _spawnTimeout)
-		{
-			//_trooper->Spawn();
-			_spawnTimer = 0;
-			_spawnTimeout = GetRandomValue(1, 3);
-		}
-	}
-
 public:
 	Rectangle Bounds() const { return _bounds; }
 	Vector2 Position() const { return _position; }
 	bool IsAlive() const { return _isAlive; }
-	bool _hasTrooper = true;
-	float SpawnTimeOut() const { return _spawnTimeout; };
-	//Trooper* _trooper = new Trooper();
+	bool HasTrooper() const { return _hasTrooper; }
+	bool TimeOut() const { return _timeOut; };
+	bool ReloadTexture() const { return _reloadTexture; };
 
 	void Helicopter::Init(Vector2 position, float speed, Texture2D texture)
 	{
 		this->_position = position;
 		this->_speed = speed;
 		this->_texture = texture;
-		//_trooper->Init(_position);
 		_spawnTimeout = GetRandomValue(1, 3);
 		if (position.x == 0)
 			_leftSided = true;
@@ -77,13 +67,11 @@ public:
 			_bounds = GetBounds();
 
 			// Trooper routine
-			/*_spawnTimer += GetFrameTime();
+			_spawnTimer += GetFrameTime();
 			if (_hasTrooper && _spawnTimer >= _spawnTimeout)
 			{
-				_hasTrooper = false;
-				_spawnTimer = 0;
-				_spawnTimeout = GetRandomValue(1, 3);
-			}*/
+				_timeOut = true;
+			}
 		}
 		else
 		{
@@ -91,6 +79,11 @@ public:
 			if (_reloadTextureTimer >= 0.5f)
 				_reloadTexture = true;
 		}
+	}
+
+	void Helicopter::DropTrooper()
+	{
+		_hasTrooper = false;
 	}
 
 	void Helicopter::Deactivate()
