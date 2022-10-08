@@ -49,18 +49,6 @@ private:
 			return rightCopterTexture;
 	}
 
-	void GameScreen::RotatePlayer()
-	{
-		int dir;
-		if (IsKeyDown(KEY_A))
-			dir = -1;
-		else if (IsKeyDown(KEY_D))
-			dir = 1;
-		else
-			dir = 0;
-		player.Rotate(dir);
-	}
-
 	Helicopter* GameScreen::SpawnHelicopter() 
 	{
 		Helicopter *helicopter = new Helicopter();

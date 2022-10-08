@@ -2,11 +2,12 @@
 #define PLAYER_H
 #define PLAYER_LIFES             5
 
+#include <vector>
+#include <math.h>
 #include "raylib.h"
 #include "screen.hpp"
 #include "bullet.h"
-#include <vector>
-#include <math.h>
+#include "helicopter.h"
 
 class Player {
 private:

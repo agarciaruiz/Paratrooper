@@ -1,7 +1,9 @@
 #ifndef BULLET_H
 #define BULLET_H
 
+#include <vector>
 #include "raylib.h"
+#include "helicopter.h"
 
 class Bullet 
 {
@@ -9,6 +11,7 @@ private:
 	Vector2 _position;
 	Vector2 _direction;
 	float _speed;
+	float _radius;
 	bool _hit;
 
 public:
@@ -19,12 +22,22 @@ public:
 	{
 		_position = position;
 		_direction = direction;
-		_speed = 3;
+		_radius = 1;
+		_speed = 5;
 	}
 
 	void Bullet::Update(std::vector<Helicopter*> helicopters)
 	{
 		// if colision con helicoptero -> hit = true
+		for(int i = 0; i < helicopters.size(); i++)
+		{
+			if (helicopters[i]->IsAlive() && CheckCollisionCircleRec(_position, _radius, helicopters[i]->Bounds()))
+			{
+				_hit = true;
+				helicopters[i]->Destroy();
+			}
+		}
+
 		_position.x += _direction.x * _speed;
 		_position.y -= _direction.y * _speed;
 	}

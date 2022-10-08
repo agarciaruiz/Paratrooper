@@ -9,15 +9,17 @@ private:
 	Rectangle _bounds;
 	bool _isLeftSide = false;
 	//Trooper _trooper;
-	float _timer = 0;
 	float _dropTime = 0;
+	float _reloadTextureTimer = 0;
+	bool _reloadTexture = false;
 
 	Rectangle Helicopter::GetBounds()
 	{
-		return Rectangle{ _position.x, _position.y, (float)_texture.width, (float)_texture.height }
+		return Rectangle{ _position.x, _position.y, (float)_texture.width, (float)_texture.height };
 	}
 public:
 	bool IsLeftSide() const { return _isLeftSide; }
+	Rectangle Bounds() const { return _bounds; }
 	
 	void Helicopter::Init(Vector2 position, float speed, Texture2D texture) override
 	{
@@ -34,12 +36,21 @@ public:
 
 	void Helicopter::Move() override
 	{
-		if (_isLeftSide)
-			_position.x += _speed;
-		else
-			_position.x -= _speed;
+		if (_isAlive) 
+		{
+			if (_isLeftSide)
+				_position.x += _speed;
+			else
+				_position.x -= _speed;
 
-		_bounds = GetBounds();
+			_bounds = GetBounds();
+		}
+		else
+		{
+			_reloadTextureTimer += GetFrameTime();
+			if (_reloadTextureTimer >= 0.5f)
+				_reloadTexture = true;
+		}
 
 		/*if (!_trooper.IsFalling() && !_trooper.IsGrounded())
 			_trooper.FollowHelicopter(_position);
@@ -80,7 +91,14 @@ public:
 		// MUST FIND PLACE TO UNLOAD THIS TEXTURE
 		/*if (_trooper.IsFalling() || _trooper.IsGrounded())
 			DrawTextureEx(_trooper.Texture(), _trooper.Position(), 0.0f, 1.0f, WHITE);*/
+		if (_reloadTexture) return;
 		DrawTextureEx(_texture, _position, 0.0f, 1.0f, WHITE);
+	}
+
+	void Helicopter::Destroy() override 
+	{
+		_texture = LoadTexture("resources/Enemies/Dead.png");
+		Deactivate();
 	}
 };
 

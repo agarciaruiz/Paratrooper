@@ -28,10 +28,7 @@ public:
 
 	virtual void Enemy::Move(){}
 
-	virtual void Enemy::Destroy()
-	{
-		_isAlive = false;
-	}
+	virtual void Enemy::Destroy(){	}
 
 };
 
