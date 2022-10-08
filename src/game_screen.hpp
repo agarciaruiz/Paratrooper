@@ -16,7 +16,7 @@ private:
 	bool gamePaused = false;
 	Player player;
 	std::vector<Helicopter*> helicopters = {};
-	std::vector<std::unique_ptr<Trooper>> troopers {};
+	std::vector<Trooper*> troopers {};
 
 	Vector2 playerPos = Vector2{ SCR_WIDTH / 2 , SCR_HEIGHT};
 	float rotationSpeed = 5.0f;
@@ -67,9 +67,9 @@ private:
 
 	void GameScreen::SpawnTrooper(Helicopter* helicopter)
 	{
-		Trooper trooper;
-		trooper.Init(helicopter->Position());
-		troopers.push_back(std::make_unique<Trooper>(trooper));
+		Trooper* trooper = new Trooper();
+		trooper->Init(helicopter->Position());
+		troopers.push_back(trooper);
 		helicopter->DropTrooper();
 	}
 
@@ -94,7 +94,7 @@ public:
 		// Press enter or tap to change to ENDING screen
 		if (!gamePaused)
 		{
-			player.Update(helicopters);
+			player.Update(helicopters, troopers);
 
 			// Helicopter Spawn
 			timer += GetFrameTime();
@@ -132,6 +132,7 @@ public:
 				}
 				else
 				{
+					delete(troopers[i]);
 					troopers.erase(std::remove(troopers.begin(), troopers.end(), troopers[i]), troopers.end());
 				}
 			}

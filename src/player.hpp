@@ -78,7 +78,7 @@ public:
         this->_shootingTimer = 0;
     }
 
-    void Player::Update(std::vector<Helicopter*> helicopters)
+    void Player::Update(std::vector<Helicopter*> helicopters, std::vector<Trooper*> troopers)
     {
         int dir;
         if (IsKeyDown(KEY_A))
