@@ -36,7 +36,7 @@ private:
 		Vector2 newPos;
 		if (_spawnTimer >= _spawnTimeout)
 		{
-			_trooper->Spawn();
+			//_trooper->Spawn();
 			_spawnTimer = 0;
 			_spawnTimeout = GetRandomValue(1, 3);
 		}
@@ -44,15 +44,18 @@ private:
 
 public:
 	Rectangle Bounds() const { return _bounds; }
+	Vector2 Position() const { return _position; }
 	bool IsAlive() const { return _isAlive; }
-	Trooper* _trooper = new Trooper();
+	bool _hasTrooper = true;
+	float SpawnTimeOut() const { return _spawnTimeout; };
+	//Trooper* _trooper = new Trooper();
 
 	void Helicopter::Init(Vector2 position, float speed, Texture2D texture)
 	{
 		this->_position = position;
 		this->_speed = speed;
 		this->_texture = texture;
-		_trooper->Init(_position);
+		//_trooper->Init(_position);
 		_spawnTimeout = GetRandomValue(1, 3);
 		if (position.x == 0)
 			_leftSided = true;
@@ -74,7 +77,13 @@ public:
 			_bounds = GetBounds();
 
 			// Trooper routine
-			SpawnTrooper();
+			/*_spawnTimer += GetFrameTime();
+			if (_hasTrooper && _spawnTimer >= _spawnTimeout)
+			{
+				_hasTrooper = false;
+				_spawnTimer = 0;
+				_spawnTimeout = GetRandomValue(1, 3);
+			}*/
 		}
 		else
 		{
@@ -82,11 +91,6 @@ public:
 			if (_reloadTextureTimer >= 0.5f)
 				_reloadTexture = true;
 		}
-
-		if (!_trooper->IsFalling())
-			_trooper->FollowHelicopter(_position);
-		else if (_trooper->IsGrounded())
-			_trooper->Fall();
 	}
 
 	void Helicopter::Deactivate()
@@ -109,10 +113,6 @@ public:
 
 	void Helicopter::Draw()
 	{
-		// MUST FIND PLACE TO UNLOAD THIS TEXTURE
-		if (_trooper->IsFalling() || _trooper->IsGrounded())
-			_trooper->Draw();
-
 		if (_reloadTexture) return;
 		DrawTextureEx(_texture, _position, 0.0f, 1.0f, WHITE);
 	}

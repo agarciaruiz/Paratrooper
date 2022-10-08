@@ -21,9 +21,9 @@ public:
 	void Trooper::Init(Vector2 position)
 	{
 		this->_position = position;
-		this->_speed = 3;
+		this->_speed = 2;
 		this->_texture = LoadTexture("resources/Enemies/Soldier.png");
-		this->_isFalling = false;
+		this->_isFalling = true;
 		this->_isGrounded = false;
 	}
 
@@ -40,19 +40,14 @@ public:
 
 	void Trooper::Fall() 
 	{
-		if (_position.y < SCR_HEIGHT)
+		if (_position.y < SCR_HEIGHT - _texture.height)
 			_position.y += _speed;
 		else 
 		{
 			_isFalling = false;
 			_isGrounded = true;
-			_position.y = SCR_HEIGHT;
+			_position.y = SCR_HEIGHT - _texture.height;
 		}
-	}
-
-	void Trooper::Spawn()
-	{
-		_isFalling = true;
 	}
 
 	void Trooper::Draw()
