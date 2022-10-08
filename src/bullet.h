@@ -26,7 +26,7 @@ public:
 		_speed = 5;
 	}
 
-	void Bullet::Update(std::vector<Helicopter*> helicopters)
+	void Bullet::Update(std::vector<Helicopter*> helicopters, std::vector<Trooper*> troopers)
 	{
 		// if colision con helicoptero -> hit = true
 		for(int i = 0; i < helicopters.size(); i++)
@@ -35,6 +35,15 @@ public:
 			{
 				_hit = true;
 				helicopters[i]->Destroy();
+			}
+		}
+
+		for (int i = 0; i < troopers.size(); i++)
+		{
+			if (troopers[i]->IsAlive() && CheckCollisionCircleRec(_position, _radius, troopers[i]->Bounds()))
+			{
+				_hit = true;
+				troopers[i]->Destroy();
 			}
 		}
 

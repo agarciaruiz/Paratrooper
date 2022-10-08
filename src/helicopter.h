@@ -39,7 +39,6 @@ public:
 	bool IsAlive() const { return _isAlive; }
 	bool HasTrooper() const { return _hasTrooper; }
 	bool TimeOut() const { return _timeOut; };
-	bool ReloadTexture() const { return _reloadTexture; };
 
 	void Helicopter::Init(Vector2 position, float speed, Texture2D texture)
 	{

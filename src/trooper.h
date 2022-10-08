@@ -11,6 +11,8 @@ private:
 	bool _isFalling;
 	bool _isGrounded;
 	bool _isAlive = true;
+	float _reloadTextureTimer = 0;
+	bool _reloadTexture = false;
 
 	Rectangle Trooper::GetBounds()
 	{
@@ -48,19 +50,38 @@ public:
 
 	void Trooper::Fall() 
 	{
-		if (_position.y < SCR_HEIGHT - _texture.height)
-			_position.y += _speed;
-		else 
+		if (_isAlive)
 		{
-			_isFalling = false;
-			_isGrounded = true;
-			_position.y = SCR_HEIGHT - _texture.height;
+			if (_position.y < SCR_HEIGHT - _texture.height)
+			{
+				_position.y += _speed;
+				_bounds = GetBounds();
+			}
+			else
+			{
+				_isFalling = false;
+				_isGrounded = true;
+				_position.y = SCR_HEIGHT - _texture.height;
+			}
+		}
+		else
+		{
+			_reloadTextureTimer += GetFrameTime();
+			if (_reloadTextureTimer >= 0.5f)
+				_reloadTexture = true;
 		}
 	}
 
 	void Trooper::Draw()
 	{
+		if (_reloadTexture) return;
 		DrawTextureEx(_texture, _position, 0.0f, 1.0f, WHITE);
+	}
+
+	void Trooper::Destroy()
+	{
+		_texture = LoadTexture("resources/Enemies/Dead.png");
+		_isAlive = false;
 	}
 };
 

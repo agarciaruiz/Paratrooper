@@ -98,7 +98,7 @@ public:
 
         for (int i = 0; i < bullets.size(); i++) 
         {
-            bullets[i]->Update(helicopters);
+            bullets[i]->Update(helicopters, troopers);
             if(bullets[i]->IsOutOfScreen() || bullets[i]->Hit())
             {
                 delete(bullets[i]);
