@@ -33,12 +33,20 @@ private:
 	void GameScreen::ResetScreen()
 	{
 		landedTroopers = 0;
+		player.UnloadTextures();
+
 		for(int i = 0; i < helicopters.size(); i++) 
+		{
+			helicopters[i]->UnloadTextures();
 			delete(helicopters[i]);
+		}
 		helicopters.clear();
 
 		for (int i = 0; i < troopers.size(); i++)
+		{
+			troopers[i]->UnloadTextures();
 			delete(troopers[i]);
+		}
 		troopers.clear();
 	}
 

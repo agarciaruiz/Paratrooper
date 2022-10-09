@@ -19,12 +19,12 @@ public:
 
 	void EndingScreen::Draw() override
 	{
-		DrawText("YOU LOOSE :(", SCR_WIDTH / 2 - MeasureText("YOU LOOSE :(", 50) / 2, GetScreenHeight() / 2, 50, PINK);
+		DrawText("YOU LOOSE :(", SCR_WIDTH / 2 - MeasureText("YOU LOOSE :(", 50) / 2, GetScreenHeight() / 2 - 50, 50, PINK);
 
 		if ((framesCounter / 30) % 2 == 0) 
 		{
-			DrawText("PRESS [ENTER] TO PLAY AGAIN", GetScreenWidth() / 2 - MeasureText("PRESS [ENTER] TO PLAY AGAIN", 20) / 2, GetScreenHeight() / 2 + 80, 20, GRAY);
-			DrawText("PRESS [0] for INSTRUCTIONS", GetScreenWidth() / 2 - MeasureText("PRESS [0] for INSTRUCTIONS", 20) / 2, GetScreenHeight() / 2 + 100, 20, DARKGRAY);
+			DrawText("PRESS [ENTER] TO PLAY AGAIN", GetScreenWidth() / 2 - MeasureText("PRESS [ENTER] TO PLAY AGAIN", 20) / 2, GetScreenHeight() / 2 + 20, 20, GRAY);
+			DrawText("PRESS [0] for INSTRUCTIONS", GetScreenWidth() / 2 - MeasureText("PRESS [0] for INSTRUCTIONS", 20) / 2, GetScreenHeight() / 2 + 40, 20, DARKGRAY);
 		}
 	}
 };

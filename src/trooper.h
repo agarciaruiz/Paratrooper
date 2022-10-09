@@ -79,6 +79,11 @@ public:
 		_texture = LoadTexture("resources/Enemies/Dead.png");
 		_isAlive = false;
 	}
+
+	void Trooper::UnloadTextures()
+	{
+		UnloadTexture(_texture);
+	}
 };
 
 #endif

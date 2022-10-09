@@ -119,7 +119,7 @@ public:
         }
     }
 
-    void Player::DeleteTexture() {
+    void Player::UnloadTextures() {
         UnloadTexture(_bodyTexture);
         UnloadTexture(_turretTexture);
     }

@@ -114,6 +114,11 @@ public:
 		RecenterTexture();
 		Deactivate();
 	}
+
+	void Helicopter::UnloadTextures()
+	{
+		UnloadTexture(_texture);
+	}
 };
 
 #endif // !HELICOPTER_H
