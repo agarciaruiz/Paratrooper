@@ -4,6 +4,7 @@
 #include <vector>
 #include "raylib.h"
 #include "helicopter.h"
+#include "trooper.h"
 
 class Bullet 
 {

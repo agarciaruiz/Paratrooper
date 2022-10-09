@@ -10,6 +10,7 @@
 #include "player.hpp"
 #include "helicopter.h"
 #include "bullet.h"
+#include "trooper.h"
 
 class GameScreen : public Screen {
 private:
@@ -19,20 +20,27 @@ private:
 	std::vector<Trooper*> troopers {};
 
 	Vector2 playerPos = Vector2{ SCR_WIDTH / 2 , SCR_HEIGHT};
-	float rotationSpeed = 5.0f;
-	int playerLifes = PLAYER_LIFES;
 
 	float timer = 0;
 	float helicopterSpawnTime = 3;
-	float helicopterSide = 0;
-	int randIndex = 0;
-	bool copterFound = false; 
-	int attempts = 0;
 
 	float trooperTimer = 0;
+	float landedTroopers = 0;
 
 	Texture2D leftCopterTexture = {0};
 	Texture2D rightCopterTexture {0};
+
+	void GameScreen::ResetScreen()
+	{
+		landedTroopers = 0;
+		for(int i = 0; i < helicopters.size(); i++) 
+			delete(helicopters[i]);
+		helicopters.clear();
+
+		for (int i = 0; i < troopers.size(); i++)
+			delete(troopers[i]);
+		troopers.clear();
+	}
 
 	float randomSide()
 	{
@@ -84,7 +92,7 @@ public:
 		leftCopterTexture = LoadTexture("resources/Enemies/Helicopter_Left.png");
 		rightCopterTexture = LoadTexture("resources/Enemies/Helicopter_Right.png");
 
-		player.Init(playerPos, rotationSpeed, playerLifes);
+		player.Init(playerPos);
 	}
 
 	void GameScreen::Update() override
@@ -123,19 +131,30 @@ public:
 				}
 			}
 
-			// Update trooper
+			// Update && Destroy trooper
 			for (int i = 0; i < troopers.size(); i++)
 			{
 				if(troopers[i]->IsAlive())
 				{
 					troopers[i]->Update();
+					if (troopers[i]->IsGrounded() && !troopers[i]->_previouslyGrounded)
+					{
+						landedTroopers++;
+						troopers[i]->PreviouslyGrounded(true);
+					}
 				}
 				else
 				{
-					delete(troopers[i]);
-					troopers.erase(std::remove(troopers.begin(), troopers.end(), troopers[i]), troopers.end());
+					if (troopers[i]->ReloadTexture()) 
+					{
+						delete(troopers[i]);
+						troopers.erase(std::remove(troopers.begin(), troopers.end(), troopers[i]), troopers.end());
+					}
 				}
 			}
+
+			if (landedTroopers == 7)
+				finishScreen = 5;
 		}
 	}
 
@@ -161,6 +180,7 @@ public:
 		UnloadFont(font);
 		UnloadTexture(player.BodyTexture());
 		UnloadTexture(player.TurretTexture());
+		ResetScreen();
 	}
 };
 

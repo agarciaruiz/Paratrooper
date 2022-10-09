@@ -33,8 +33,11 @@ public:
 		DrawText("by", SCR_WIDTH / 2 - MeasureText("by", 20) / 2, GetScreenHeight() / 4 + 80, 20, DARKGRAY);
 		DrawText("Alberto G.", SCR_WIDTH / 2 - MeasureText("Alberto G.", 20) / 2, GetScreenHeight() / 4 + 100, 20, DARKGRAY);
 
-		if ((framesCounter / 30) % 2 == 0) DrawText("PRESS [ENTER] to START", GetScreenWidth() / 2 - MeasureText("PRESS [ENTER] to START", 20) / 2, GetScreenHeight() / 2 + 60, 20, DARKGRAY);
-		if ((framesCounter / 30) % 2 == 0) DrawText("PRESS [0] for INSTRUCTIONS", GetScreenWidth() / 2 - MeasureText("PRESS [0] for INSTRUCTIONS", 20) / 2, GetScreenHeight() / 2 + 80, 20, DARKGRAY);
+		if ((framesCounter / 30) % 2 == 0) 
+		{
+			DrawText("PRESS [ENTER] to START", GetScreenWidth() / 2 - MeasureText("PRESS [ENTER] to START", 20) / 2, GetScreenHeight() / 2 + 60, 20, GRAY);
+			DrawText("PRESS [0] for INSTRUCTIONS", GetScreenWidth() / 2 - MeasureText("PRESS [0] for INSTRUCTIONS", 20) / 2, GetScreenHeight() / 2 + 80, 20, DARKGRAY);
+		}
 	}
 };
 

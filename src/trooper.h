@@ -1,18 +1,18 @@
 #ifndef TROOPER_H
 #define TROOPER_H
+#include "raylib.h"
 
 class Trooper
 {
 private:
-	float _speed;
+	float _speed = 2;
 	Vector2 _position;
 	Texture2D _texture;
 	Rectangle _bounds;
-	bool _isFalling;
-	bool _isGrounded;
+	bool _isFalling = true;
+	bool _isGrounded = false;
 	bool _isAlive = true;
 	float _reloadTextureTimer = 0;
-	bool _reloadTexture = false;
 
 	Rectangle Trooper::GetBounds()
 	{
@@ -20,8 +20,10 @@ private:
 	}
 
 public:
+	bool _previouslyGrounded = false;
 	bool IsFalling() const { return _isFalling; }
 	bool IsGrounded() const { return _isGrounded; }
+	void PreviouslyGrounded(bool value) { _previouslyGrounded = value; }
 	bool IsAlive() const { return _isAlive; }
 	Texture2D Texture() const { return _texture; }
 	Vector2 Position() const { return _position; }
@@ -30,10 +32,7 @@ public:
 	void Trooper::Init(Vector2 position)
 	{
 		this->_position = position;
-		this->_speed = 2;
 		this->_texture = LoadTexture("resources/Enemies/Soldier.png");
-		this->_isFalling = true;
-		this->_isGrounded = false;
 		this->_bounds = GetBounds();
 	}
 
@@ -44,37 +43,34 @@ public:
 
 	void Trooper::Update() 
 	{
-		if(_isAlive)
-			Fall();
+		Fall();
 	}
 
 	void Trooper::Fall() 
 	{
-		if (_isAlive)
+		if (_position.y < SCR_HEIGHT - _texture.height)
 		{
-			if (_position.y < SCR_HEIGHT - _texture.height)
-			{
-				_position.y += _speed;
-				_bounds = GetBounds();
-			}
-			else
-			{
-				_isFalling = false;
-				_isGrounded = true;
-				_position.y = SCR_HEIGHT - _texture.height;
-			}
+			_position.y += _speed;
+			_bounds = GetBounds();
 		}
 		else
 		{
-			_reloadTextureTimer += GetFrameTime();
-			if (_reloadTextureTimer >= 0.5f)
-				_reloadTexture = true;
+			_isFalling = false;
+			_isGrounded = true;
+			_position.y = SCR_HEIGHT - _texture.height;
 		}
+	}
+
+	bool Trooper::ReloadTexture()
+	{
+		_reloadTextureTimer += GetFrameTime();
+		if (_reloadTextureTimer >= 0.5f)
+			return true;
+		return false;
 	}
 
 	void Trooper::Draw()
 	{
-		if (_reloadTexture) return;
 		DrawTextureEx(_texture, _position, 0.0f, 1.0f, WHITE);
 	}
 

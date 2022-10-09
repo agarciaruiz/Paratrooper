@@ -1,6 +1,5 @@
 #ifndef HELICOPTER_H
 #define HELICOPTER_H
-#include "trooper.h"
 
 class Helicopter
 {

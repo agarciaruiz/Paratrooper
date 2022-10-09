@@ -205,7 +205,6 @@ static void UpdateDrawFrame()
                 gameScreen->Update();
 
                 if (gameScreen->FinishScreen() == 5) TransitionToScreen(ENDING);
-                //else if (FinishGameplayScreen() == 3) TransitionToScreen(TITLE);
 
             } break;
             case ENDING:
@@ -213,6 +212,7 @@ static void UpdateDrawFrame()
                 endingScreen->Update();
 
                 if (endingScreen->FinishScreen() == 2) TransitionToScreen(TITLE);
+                else if (endingScreen->FinishScreen() == 3) TransitionToScreen(OPTIONS);
 
             } break;
             default: break;

@@ -14,8 +14,7 @@ private:
     Vector2 _basePosition;
     Vector2 _turretPosition;
     float _turretRotation;
-    float _rotationSpeed;
-    int _lifes;
+    float _rotationSpeed = 5;
     float maxAngle = 70;
     float _timeout = 0.2;
     float _shootingTimer;
@@ -54,12 +53,11 @@ public:
     Vector2 TurretPosition () const { return _turretPosition; }
     float TurretRotation () const { return _turretRotation; }
     float RotSpeed () const { return _rotationSpeed; }
-    int Lifes () const { return _lifes; }
 
     Texture2D BodyTexture() const { return _bodyTexture; }
     Texture2D TurretTexture() const { return _turretTexture; }
 
-    void Player::Init(Vector2 basePosition, float rotationSpeed, int lifes)
+    void Player::Init(Vector2 basePosition)
     {
         _bodyTexture = LoadTexture("resources/Player/PlayerBody.png");
         _turretTexture = LoadTexture("resources/Player/Turret.png");
@@ -72,9 +70,6 @@ public:
         _turretPosition.x -= (float)_turretTexture.width / 2;
         _turretPosition.y -= (float)_turretTexture.height + (float)_bodyTexture.height;
 
-        this->_rotationSpeed = rotationSpeed;
-
-        this->_lifes = lifes;
         this->_shootingTimer = 0;
     }
 
@@ -107,11 +102,6 @@ public:
         }   
     }
 
-    void Player::GetDamage() 
-    {
-        _lifes--;
-    }
-
     void Player::Draw()
     {
         // Draw turret
@@ -126,7 +116,6 @@ public:
         for(int i = 0; i < bullets.size(); i++)
         {
             bullets[i]->Draw();
-            //while(!bullets[i]->IsOutOfScreen() && !bullets[i]->Hit())
         }
     }
 
