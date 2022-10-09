@@ -14,24 +14,30 @@
 
 class GameScreen : public Screen {
 private:
+	// Game settings
 	bool gamePaused = false;
-	Player player;
-	std::vector<Helicopter*> helicopters = {};
-	std::vector<Trooper*> troopers {};
 
+	// Player settings
+	Player player;
 	Vector2 playerPos = Vector2{ SCR_WIDTH / 2 , SCR_HEIGHT};
 
+	// Helicopter settings
+	std::vector<Helicopter*> helicopters = {};
+	Texture2D leftCopterTexture = {0};
+	Texture2D rightCopterTexture {0};
 	float timer = 0;
 	float helicopterSpawnTime = 3;
 
+	// Trooper settings
+	std::vector<Trooper*> troopers {};
 	float trooperTimer = 0;
 	float landedTroopers = 0;
 
-	Texture2D leftCopterTexture = {0};
-	Texture2D rightCopterTexture {0};
-
+	// Private methods
 	void GameScreen::ResetScreen()
 	{
+		UnloadFont(font);
+
 		landedTroopers = 0;
 		player.UnloadTextures();
 
@@ -50,7 +56,7 @@ private:
 		troopers.clear();
 	}
 
-	float randomSide()
+	float GameScreen::randomSide()
 	{
 		srand(time(NULL));
 		int r = rand() % 2;
@@ -60,7 +66,7 @@ private:
 			return SCR_WIDTH;
 	}
 
-	Texture2D GetTextureFromSide(float side)
+	Texture2D GameScreen::GetTextureFromSide(float side)
 	{
 		if (side == 0)
 			return leftCopterTexture;
@@ -161,6 +167,7 @@ public:
 				}
 			}
 
+			// Game end condition
 			if (landedTroopers == 7)
 				finishScreen = 5;
 		}
@@ -185,9 +192,6 @@ public:
 
 	void GameScreen::Unload() override 
 	{
-		UnloadFont(font);
-		UnloadTexture(player.BodyTexture());
-		UnloadTexture(player.TurretTexture());
 		ResetScreen();
 	}
 };
