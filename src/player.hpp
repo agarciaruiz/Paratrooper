@@ -140,6 +140,12 @@ public:
         }
     }
 
+    void Player::Reset()
+    {
+        UnloadTextures();
+        _score = 0;
+    }
+
     void Player::UnloadTextures() {
         UnloadTexture(_bodyTexture);
         UnloadTexture(_turretTexture);

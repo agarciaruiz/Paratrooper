@@ -45,7 +45,7 @@ private:
 		UnloadFont(font);
 
 		landedTroopers = 0;
-		player.UnloadTextures();
+		player.Reset();
 
 		for(int i = 0; i < helicopters.size(); i++) 
 		{
