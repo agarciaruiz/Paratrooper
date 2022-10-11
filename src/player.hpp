@@ -18,6 +18,7 @@ private:
     float maxAngle = 70;
     float _timeout = 0.2;
     float _shootingTimer;
+    int _score = 0;
 
     Texture2D _bodyTexture;
     Texture2D _turretTexture;
@@ -53,6 +54,7 @@ public:
     Vector2 TurretPosition () const { return _turretPosition; }
     float TurretRotation () const { return _turretRotation; }
     float RotSpeed () const { return _rotationSpeed; }
+    int Score () const { return _score; }
 
     Texture2D BodyTexture() const { return _bodyTexture; }
     Texture2D TurretTexture() const { return _turretTexture; }
@@ -94,12 +96,31 @@ public:
         for (int i = 0; i < bullets.size(); i++) 
         {
             bullets[i]->Update(helicopters, troopers);
-            if(bullets[i]->IsOutOfScreen() || bullets[i]->Hit())
+
+            if(bullets[i]->HelicopterHit())
+            {
+                _score += 10;
+            }
+            else if (bullets[i]->TrooperHit())
+            {
+                _score += 5;
+            }
+            else if (bullets[i]->IsOutOfScreen() && _score != 0) 
+            {
+                _score -= 1;
+            }
+
+            if(bullets[i]->IsOutOfScreen() || bullets[i]->HelicopterHit() || bullets[i]->TrooperHit())
             {
                 delete(bullets[i]);
                 bullets.erase(std::remove(bullets.begin(), bullets.end(), bullets[i]), bullets.end());
             }
         }   
+    }
+
+    void Player::SetScore(int score)
+    {
+        _score += score;
     }
 
     void Player::Draw()

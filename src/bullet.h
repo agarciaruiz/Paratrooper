@@ -13,10 +13,14 @@ private:
 	Vector2 _direction;
 	float _speed;
 	float _radius;
-	bool _hit;
+	bool _helicopterHit = false;
+	bool _trooperHit = false;
+	int _score = 0;
 
 public:
-	bool Hit() const{ return _hit; }
+	bool HelicopterHit() const{ return _helicopterHit; }
+	bool TrooperHit() const{ return _trooperHit; }
+	int Score() const{ return _score; }
 	Vector2 Direction() const{ return _direction; }
 
 	void Bullet::Init(Vector2 position, Vector2 direction)
@@ -34,7 +38,8 @@ public:
 		{
 			if (helicopters[i]->IsAlive() && CheckCollisionCircleRec(_position, _radius, helicopters[i]->Bounds()))
 			{
-				_hit = true;
+				_helicopterHit = true;
+				_score = 10;
 				helicopters[i]->Destroy();
 			}
 		}
@@ -43,7 +48,8 @@ public:
 		{
 			if (troopers[i]->IsAlive() && CheckCollisionCircleRec(_position, _radius, troopers[i]->Bounds()))
 			{
-				_hit = true;
+				_trooperHit = true;
+				_score = 5;
 				troopers[i]->Destroy();
 			}
 		}

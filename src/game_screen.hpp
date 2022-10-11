@@ -16,6 +16,9 @@ class GameScreen : public Screen {
 private:
 	// Game settings
 	bool gamePaused = false;
+	float gameSecs = 0;
+	int gameMins = 0;
+	int gameHours = 0;
 
 	// Player settings
 	Player player;
@@ -31,11 +34,14 @@ private:
 	// Trooper settings
 	std::vector<Trooper*> troopers {};
 	float trooperTimer = 0;
-	float landedTroopers = 0;
+	int landedTroopers = 0;
 
 	// Private methods
 	void GameScreen::ResetScreen()
 	{
+		gameSecs = 0;
+		gameMins = 0;
+		gameHours = 0;
 		UnloadFont(font);
 
 		landedTroopers = 0;
@@ -116,6 +122,18 @@ public:
 		// Press enter or tap to change to ENDING screen
 		if (!gamePaused)
 		{
+			if(gameMins >= 60)
+			{
+				gameHours++;
+				gameMins = 0;
+			}
+			if(gameSecs >= 60)
+			{
+				gameMins++;
+				gameSecs = 0;
+			}
+			gameSecs += GetFrameTime();
+				
 			player.Update(helicopters, troopers);
 
 			// Helicopter Spawn
@@ -140,8 +158,11 @@ public:
 				}
 				else
 				{	
-					delete(helicopters[i]);
-					helicopters.erase(std::remove(helicopters.begin(), helicopters.end(), helicopters[i]), helicopters.end());
+					if(!helicopters[i]->ReloadTexture())
+					{
+						delete(helicopters[i]);
+						helicopters.erase(std::remove(helicopters.begin(), helicopters.end(), helicopters[i]), helicopters.end());
+					}
 				}
 			}
 
@@ -161,6 +182,7 @@ public:
 				{
 					if (troopers[i]->ReloadTexture()) 
 					{
+						player.SetScore(troopers[i]->Score());
 						delete(troopers[i]);
 						troopers.erase(std::remove(troopers.begin(), troopers.end(), troopers[i]), troopers.end());
 					}
@@ -175,6 +197,15 @@ public:
 
 	void GameScreen::Draw() override
 	{
+		char* time = (char*)TextFormat("TIME: %ih : %im : %is", gameHours, gameMins, (int)gameSecs);
+		DrawText(time, 20, 10, 20, GRAY);
+
+		char* numLanded = (char*)TextFormat("LANDED TROOPERS: %i", landedTroopers);
+		DrawText(numLanded, 20, 30, 20, GRAY);
+
+		char* score = (char*)TextFormat("SCORE: %i", player.Score());
+		DrawText(score, 20, 50, 20, GRAY);
+
 		player.Draw();
 
 		for (int i = 0; i < helicopters.size(); i++)

@@ -13,6 +13,7 @@ private:
 	bool _isGrounded = false;
 	bool _isAlive = true;
 	float _reloadTextureTimer = 0;
+	int _score = 5;
 
 	Rectangle Trooper::GetBounds()
 	{
@@ -28,6 +29,7 @@ public:
 	Texture2D Texture() const { return _texture; }
 	Vector2 Position() const { return _position; }
 	Rectangle Bounds() const { return _bounds; }
+	float Score() const { return _score; }
 
 	void Trooper::Init(Vector2 position)
 	{
