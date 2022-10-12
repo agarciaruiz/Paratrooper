@@ -130,7 +130,8 @@ bool Helicopter::IsOutOfScreen()
 void Helicopter::Draw()
 {
 	if (_reloadTexture) return;
-	DrawTextureEx(_texture, _position, 0.0f, 1.0f, WHITE);
+	if(_isAlive)
+		DrawTextureEx(_texture, _position, 0.0f, 1.0f, WHITE);
 }
 
 void Helicopter::Destroy()

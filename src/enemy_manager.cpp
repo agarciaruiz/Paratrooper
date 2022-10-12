@@ -99,9 +99,11 @@ void EnemyManager::MoveHelicopters()
 
 void EnemyManager::TrooperRoutine()
 {
-	for(Trooper* trooper : _troopers)
+	std::list<Trooper*>::iterator it = _troopers.begin();
+	while(it != _troopers.end())
 	{
-		if(trooper->IsAlive())
+		Trooper* trooper = (*it);
+		if (trooper->IsAlive())
 		{
 			trooper->Update();
 			if(trooper->IsGrounded() && !trooper->previouslyGrounded)
@@ -109,13 +111,14 @@ void EnemyManager::TrooperRoutine()
 				_landedTroopers++;
 				trooper->PreviouslyGrounded(true);
 			}
+			++it;
 		}
 		else
 		{
 			if(trooper->ReloadTexture())
 			{
 				troopersPool.ReturnItem(trooper);
-				_troopers.remove(trooper);
+				_troopers.erase(it++);
 			}
 		}
 	}
