@@ -2,45 +2,6 @@
 
 int GameManager::LandedTroopers() const { return _landedTroopers; }
 
-float GameManager::randomSide()
-{
-	srand(time(NULL));
-	int r = rand() % 2;
-	if (r == 0)
-		return 0;
-	else
-		return SCR_WIDTH;
-}
-
-Texture2D GameManager::GetTextureFromSide(float side)
-{
-	if (side == 0)
-		return leftCopterTexture;
-	else
-		return rightCopterTexture;
-}
-
-Helicopter* GameManager::SpawnHelicopter()
-{
-	Helicopter* helicopter = new Helicopter();
-
-	float randomHeight = GetRandomValue(SCR_HEIGHT / 3, SCR_HEIGHT / 8);
-	float speed = GetRandomValue(3, 4);
-	Vector2 spawnPos = Vector2{ randomSide(), randomHeight };
-
-	helicopter->Init(spawnPos, speed, GetTextureFromSide(spawnPos.x));
-
-	return helicopter;
-}
-
-void GameManager::SpawnTrooper(Helicopter* helicopter)
-{
-	Trooper* trooper = new Trooper();
-	trooper->Init(helicopter->Position());
-	troopers.push_back(trooper);
-	helicopter->DropTrooper();
-}
-
 void GameManager::Init()
 {
 	gamePaused = false;
@@ -51,9 +12,6 @@ void GameManager::Init()
 	SetRandomSeed(time(NULL));
 	helicopterSpawnTime = 3;
 	timer = helicopterSpawnTime - 1;
-
-	leftCopterTexture = LoadTexture("resources/Enemies/Helicopter_Left.png");
-	rightCopterTexture = LoadTexture("resources/Enemies/Helicopter_Right.png");
 
 	playerPos = Vector2{ SCR_WIDTH / 2 , SCR_HEIGHT };
 	player.Init(playerPos);
@@ -69,76 +27,132 @@ void GameManager::Update()
 	// Press enter or tap to change to ENDING screen
 	if (!gamePaused)
 	{
-		if (gameMins >= 60)
-		{
-			gameHours++;
-			gameMins = 0;
-		}
-		if (gameSecs >= 60)
-		{
-			gameMins++;
-			gameSecs = 0;
-		}
-		gameSecs += GetFrameTime();
-
+		UpdateTime();
 		player.Update(helicopters, troopers);
-
-		// Helicopter Spawn
-		timer += GetFrameTime();
-		if (timer >= helicopterSpawnTime)
-		{
-			helicopters.push_back(SpawnHelicopter());
-			helicopterSpawnTime = GetRandomValue(3, 5);
-			timer = 0;
-		}
-
-		// Helicopter Move && Delete
-		for (int i = 0; i < helicopters.size(); i++)
-		{
-			if (helicopters[i]->IsAlive() || !helicopters[i]->IsOutOfScreen())
-			{
-				if (helicopters[i]->HasTrooper() && helicopters[i]->TimeOut())
-				{
-					SpawnTrooper(helicopters[i]);
-				}
-				helicopters[i]->Move();
-			}
-			else
-			{
-				if (!helicopters[i]->ReloadTexture())
-				{
-					delete(helicopters[i]);
-					helicopters.erase(std::remove(helicopters.begin(), helicopters.end(), helicopters[i]), helicopters.end());
-				}
-			}
-		}
-
+		// Helicopter spawn, move and destroy
+		HelicopterRoutine();
 		// Update && Destroy trooper
-		for (int i = 0; i < troopers.size(); i++)
-		{
-			if (troopers[i]->IsAlive())
-			{
-				troopers[i]->Update();
-				if (troopers[i]->IsGrounded() && !troopers[i]->_previouslyGrounded)
-				{
-					_landedTroopers++;
-					troopers[i]->PreviouslyGrounded(true);
-				}
-			}
-			else
-			{
-				if (troopers[i]->ReloadTexture())
-				{
-					delete(troopers[i]);
-					troopers.erase(std::remove(troopers.begin(), troopers.end(), troopers[i]), troopers.end());
-				}
-			}
-		}
+		TrooperRoutine();
 	}
 }
 
 void GameManager::Draw()
 {
+	DrawUI();
+	player.Draw();
+	DrawHelicopters();
+	DrawTroopers();
+}
+
+Helicopter* GameManager::SpawnHelicopter()
+{
+	Helicopter* helicopter = new Helicopter();
+	helicopter->Init();
+	return helicopter;
+}
+
+void GameManager::SpawnTrooper(Helicopter* helicopter)
+{
+	Trooper* trooper = new Trooper();
+	trooper->Init(helicopter->Position());
+	troopers.push_back(trooper);
+	helicopter->DropTrooper();
+}
+
+void GameManager::UpdateTime()
+{
+	if (gameMins >= 60)
+	{
+		gameHours++;
+		gameMins = 0;
+	}
+	if (gameSecs >= 60)
+	{
+		gameMins++;
+		gameSecs = 0;
+	}
+	gameSecs += GetFrameTime();
+}
+
+void GameManager::HelicopterRoutine()
+{
+	timer += GetFrameTime();
+	if (timer >= helicopterSpawnTime)
+	{
+		helicopters.push_back(SpawnHelicopter());
+		helicopterSpawnTime = GetRandomValue(3, 5);
+		timer = 0;
+	}
+	MoveHelicopters();
+}
+
+void GameManager::MoveHelicopters()
+{
+	for (int i = 0; i < helicopters.size(); i++)
+	{
+		if (helicopters[i]->IsAlive() || !helicopters[i]->IsOutOfScreen())
+		{
+			if (helicopters[i]->HasTrooper() && helicopters[i]->TimeOut())
+			{
+				SpawnTrooper(helicopters[i]);
+			}
+			helicopters[i]->Move();
+		}
+		else
+		{
+			if (!helicopters[i]->ReloadTexture())
+			{
+				delete(helicopters[i]);
+				helicopters.erase(std::remove(helicopters.begin(), helicopters.end(), helicopters[i]), helicopters.end());
+			}
+		}
+	}
+}
+
+void GameManager::TrooperRoutine()
+{
+	for (int i = 0; i < troopers.size(); i++)
+	{
+		if (troopers[i]->IsAlive())
+		{
+			troopers[i]->Update();
+			if (troopers[i]->IsGrounded() && !troopers[i]->_previouslyGrounded)
+			{
+				_landedTroopers++;
+				troopers[i]->PreviouslyGrounded(true);
+			}
+		}
+		else
+		{
+			if (troopers[i]->ReloadTexture())
+			{
+				delete(troopers[i]);
+				troopers.erase(std::remove(troopers.begin(), troopers.end(), troopers[i]), troopers.end());
+			}
+		}
+	}
+}
+
+void GameManager::DrawHelicopters()
+{
+	for (int i = 0; i < helicopters.size(); i++)
+	{
+		helicopters[i]->Draw();
+	}
+}
+
+void GameManager::DrawTroopers()
+{
+	for (int i = 0; i < troopers.size(); i++)
+	{
+		troopers[i]->Draw();
+	}
+}
+
+void GameManager::DrawUI()
+{
+	if (gamePaused) DrawText("GAME PAUSED", SCR_WIDTH / 2 - MeasureText("GAME PAUSED", 40) / 2, SCR_HEIGHT / 2 + 60, 40, GRAY);
+
 	char* time = (char*)TextFormat("TIME: %ih : %im : %is", gameHours, gameMins, (int)gameSecs);
 	DrawText(time, 20, 10, 20, GRAY);
 
@@ -147,20 +161,6 @@ void GameManager::Draw()
 
 	char* score = (char*)TextFormat("SCORE: %i", player.Score());
 	DrawText(score, 20, 50, 20, GRAY);
-
-	player.Draw();
-
-	for (int i = 0; i < helicopters.size(); i++)
-	{
-		helicopters[i]->Draw();
-	}
-
-	for (int i = 0; i < troopers.size(); i++)
-	{
-		troopers[i]->Draw();
-	}
-
-	if (gamePaused) DrawText("GAME PAUSED", SCR_WIDTH / 2 - MeasureText("GAME PAUSED", 40) / 2, SCR_HEIGHT / 2 + 60, 40, GRAY);
 }
 
 void GameManager::ResetGame() 

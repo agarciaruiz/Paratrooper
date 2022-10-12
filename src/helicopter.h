@@ -1,5 +1,7 @@
 #ifndef HELICOPTER_H
 #define HELICOPTER_H
+#include <time.h>
+#include <stdlib.h>
 #include "global.h"
 #include "raylib.h"
 
@@ -10,6 +12,8 @@ private:
 	Rectangle _bounds;
 	Vector2 _position;
 	Texture2D _texture;
+	Texture2D _leftCopterTexture;
+	Texture2D _rightCopterTexture;
 	float _speed;
 	bool _leftSided;
 	bool _isAlive;
@@ -26,6 +30,10 @@ private:
 
 	Rectangle Helicopter::GetBounds();
 	void Helicopter::RecenterTexture();
+	float Helicopter::RandomSide();
+	Texture2D Helicopter::GetTextureFromSide(float side);
+	Vector2 Helicopter::StartingPos();
+	void Helicopter::SetSide();
 
 public:
 	Rectangle Helicopter::Bounds() const;
@@ -35,7 +43,7 @@ public:
 	bool Helicopter::TimeOut() const;
 	bool Helicopter::ReloadTexture() const;
 
-	void Helicopter::Init(Vector2 position, float speed, Texture2D texture);
+	void Helicopter::Init();
 	void Helicopter::Move();
 	void Helicopter::DropTrooper();
 	void Helicopter::Deactivate();

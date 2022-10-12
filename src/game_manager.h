@@ -22,8 +22,6 @@ private:
 
 	// Helicopter settings
 	std::vector<Helicopter*> helicopters{};
-	Texture2D leftCopterTexture{};
-	Texture2D rightCopterTexture{};
 	float timer;
 	float helicopterSpawnTime;
 
@@ -33,10 +31,15 @@ private:
 	int _landedTroopers;
 
 	// Private methods
-	float GameManager::randomSide();
-	Texture2D GameManager::GetTextureFromSide(float side);
 	Helicopter* GameManager::SpawnHelicopter();
 	void GameManager::SpawnTrooper(Helicopter* helicopter);
+	void GameManager::UpdateTime();
+	void GameManager::HelicopterRoutine();
+	void GameManager::MoveHelicopters();
+	void GameManager::TrooperRoutine();
+	void GameManager::DrawHelicopters();
+	void GameManager::DrawTroopers();
+	void GameManager::DrawUI();
 
 public:
 	int LandedTroopers() const;
