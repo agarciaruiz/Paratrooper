@@ -23,6 +23,7 @@ private:
     Texture2D _bodyTexture;
     Texture2D _turretTexture;
     std::vector<Bullet*> bullets = {};
+    Sound _laserSound;
 
     Bullet* Player::SpawnBullet()
     {
@@ -46,6 +47,7 @@ private:
 
     void Player::Shoot()
     {
+        PlaySound(_laserSound);
         bullets.push_back(SpawnBullet());
     }
 
@@ -64,6 +66,7 @@ public:
         _bodyTexture = LoadTexture("resources/Player/PlayerBody.png");
         _turretTexture = LoadTexture("resources/Player/Turret.png");
 
+
         this->_basePosition = basePosition;
         _basePosition.x -= (float)_bodyTexture.width / 2;
         _basePosition.y -= (float)_bodyTexture.height;
@@ -73,6 +76,8 @@ public:
         _turretPosition.y -= (float)_turretTexture.height + (float)_bodyTexture.height;
 
         this->_shootingTimer = 0;
+
+        _laserSound = LoadSound("resources/Music/shoot.wav");
     }
 
     void Player::Update(std::vector<Helicopter*> helicopters, std::vector<Trooper*> troopers)
@@ -142,6 +147,7 @@ public:
 
     void Player::Reset()
     {
+        UnloadSound(_laserSound);
         UnloadTextures();
         _score = 0;
     }

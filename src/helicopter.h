@@ -12,6 +12,7 @@ private:
 	bool _leftSided = false;
 	bool _isAlive;
 	int _score = 10;
+	Sound _explosion;
 
 	float _reloadTextureTimer = 0;
 	bool _reloadTexture = false;
@@ -52,6 +53,8 @@ public:
 			_leftSided = true;
 		_isAlive = true;
 		_bounds = GetBounds();
+
+		_explosion = LoadSound("resources/Music/explosion.wav");
 	}
 
 	void Helicopter::Move()
@@ -113,6 +116,7 @@ public:
 
 	void Helicopter::Destroy() 
 	{
+		PlaySound(_explosion);
 		_texture = LoadTexture("resources/Enemies/Dead.png");
 		RecenterTexture();
 		Deactivate();

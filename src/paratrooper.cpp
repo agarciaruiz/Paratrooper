@@ -13,8 +13,7 @@ int main(void)
     InitAudioDevice();      // Initialize audio device
 
     // Load global data (assets that must be available in all screens, i.e. font)
-    music = LoadMusicStream("resources/ambient.ogg");
-    fxCoin = LoadSound("resources/coin.wav");
+    music = LoadMusicStream("resources/Music/bso.wav");
     
     SetMusicVolume(music, 1.0f);
     PlayMusicStream(music);
@@ -49,7 +48,6 @@ int main(void)
 
     // Unload global data loaded
     UnloadMusicStream(music);
-    UnloadSound(fxCoin);
     delete logoScreen;
     delete titleScreen;
     delete optionsScreen;

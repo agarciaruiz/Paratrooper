@@ -14,7 +14,6 @@
 enum Screens { NONE, LOGO, TITLE, OPTIONS, GAMEPLAY, ENDING };
 Screens currentScreen = Screens::LOGO;
 Music music = { 0 };
-Sound fxCoin = { 0 };
 
 LogoScreen* logoScreen = new LogoScreen();
 TitleScreen* titleScreen = new TitleScreen();
