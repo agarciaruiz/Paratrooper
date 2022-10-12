@@ -180,7 +180,7 @@
     <ClInclude Include="..\src\logo_screen.hpp" />
     <ClInclude Include="..\src\player.hpp" />
     <ClInclude Include="..\src\screen.hpp" />
-    <ClInclude Include="..\src\paratrooper.hpp" />
+    <ClInclude Include="..\src\main.hpp" />
     <ClInclude Include="..\src\title_screen.hpp" />
     <ClInclude Include="..\src\options_screen.hpp" />
     <ClInclude Include="..\src\trooper.h" />
@@ -194,7 +194,7 @@
     <ClCompile Include="..\src\helicopter.cpp" />
     <ClCompile Include="..\src\logo_screen.cpp" />
     <ClCompile Include="..\src\options_screen.cpp" />
-    <ClCompile Include="..\src\paratrooper.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\player.cpp" />
     <ClCompile Include="..\src\screen.cpp" />
     <ClCompile Include="..\src\title_screen.cpp" />
