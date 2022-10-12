@@ -1,33 +1,21 @@
 #ifndef SCREENS_H
 #define SCREENS_H
 
-#define SCR_WIDTH 800
-#define SCR_HEIGHT 450
-
 #include "raylib.h"
+#include "global.h"
 
 class Screen {
 protected:
-	int framesCounter = 0;
-	int finishScreen = 0;
-	Font font = { 0 };
+	int framesCounter;
+	int finishScreen;
+	Font font {};
 
 public:
-	int FinishScreen() const { return finishScreen; }
+	int Screen::FinishScreen() const;
 
-	virtual void Screen::Init()
-	{    
-		framesCounter = 0;
-		finishScreen = 0;
-		font = LoadFont("resources/mecha.png");
-	}
-
-	virtual void Screen::Update(){}
-	virtual void Screen::Draw(){}
-
-	virtual void Screen::Unload()
-	{
-		UnloadFont(font);
-	}
+	virtual void Screen::Init();
+	virtual void Screen::Update();
+	virtual void Screen::Draw();
+	virtual void Screen::Unload();
 };
 #endif // SCREENS_H

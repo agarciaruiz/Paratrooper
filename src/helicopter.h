@@ -1,5 +1,6 @@
 #ifndef HELICOPTER_H
 #define HELICOPTER_H
+#include "global.h"
 
 class Helicopter
 {
