@@ -187,6 +187,7 @@
     <ClCompile Include="..\src\bullet.cpp" />
     <ClCompile Include="..\src\ending_screen.cpp" />
     <ClCompile Include="..\src\game_screen.cpp" />
+    <ClCompile Include="..\src\helicopter.cpp" />
     <ClCompile Include="..\src\logo_screen.cpp" />
     <ClCompile Include="..\src\options_screen.cpp" />
     <ClCompile Include="..\src\paratrooper.cpp" />
