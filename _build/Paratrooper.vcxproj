@@ -172,6 +172,7 @@
   <ItemGroup>
     <ClInclude Include="..\src\bullet.h" />
     <ClInclude Include="..\src\ending_screen.hpp" />
+    <ClInclude Include="..\src\enemy_manager.h" />
     <ClInclude Include="..\src\game_manager.h" />
     <ClInclude Include="..\src\game_screen.hpp" />
     <ClInclude Include="..\src\global.h" />
@@ -187,6 +188,7 @@
   <ItemGroup>
     <ClCompile Include="..\src\bullet.cpp" />
     <ClCompile Include="..\src\ending_screen.cpp" />
+    <ClCompile Include="..\src\enemy_manager.cpp" />
     <ClCompile Include="..\src\game_manager.cpp" />
     <ClCompile Include="..\src\game_screen.cpp" />
     <ClCompile Include="..\src\helicopter.cpp" />

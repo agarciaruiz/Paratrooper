@@ -4,9 +4,8 @@
 #include <vector>
 #include "raylib.h"
 #include "player.hpp"
-#include "helicopter.h"
 #include "bullet.h"
-#include "trooper.h"
+#include "enemy_manager.h"
 
 class GameManager {
 private:
@@ -20,29 +19,14 @@ private:
 	Player player;
 	Vector2 playerPos;
 
-	// Helicopter settings
-	std::vector<Helicopter*> helicopters{};
-	float timer;
-	float helicopterSpawnTime;
-
-	// Trooper settings
-	std::vector<Trooper*> troopers{};
-	float trooperTimer;
-	int _landedTroopers;
+	EnemyManager _enemyManager{};
 
 	// Private methods
-	Helicopter* GameManager::SpawnHelicopter();
-	void GameManager::SpawnTrooper(Helicopter* helicopter);
 	void GameManager::UpdateTime();
-	void GameManager::HelicopterRoutine();
-	void GameManager::MoveHelicopters();
-	void GameManager::TrooperRoutine();
-	void GameManager::DrawHelicopters();
-	void GameManager::DrawTroopers();
 	void GameManager::DrawUI();
 
 public:
-	int LandedTroopers() const;
+	EnemyManager EnemyManager() const;
 
 	void GameManager::Init();
 	void GameManager::Update();
