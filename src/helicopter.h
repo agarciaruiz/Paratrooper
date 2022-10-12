@@ -2,6 +2,7 @@
 #define HELICOPTER_H
 #include <time.h>
 #include <stdlib.h>
+#include <list>
 #include "global.h"
 #include "raylib.h"
 
@@ -51,6 +52,33 @@ public:
 	void Helicopter::Draw();
 	void Helicopter::Destroy();
 	void Helicopter::UnloadTextures();
+};
+
+class HelicopterPool 
+{
+private:
+	std::list<Helicopter*> helicopters{};
+public:
+	Helicopter* HelicopterPool::GetItem()
+	{
+		if(helicopters.empty())
+		{
+			Helicopter* helicopter = new Helicopter();
+			helicopter->Init();
+			return helicopter;
+		}
+		else
+		{
+			Helicopter* helicopter = helicopters.front();
+			helicopters.pop_front();
+			return helicopter;
+		}
+	}
+
+	void HelicopterPool::ReturnItem(Helicopter* helicopter)
+	{
+		helicopters.push_back(helicopter);
+	}
 };
 
 #endif // !HELICOPTER_H

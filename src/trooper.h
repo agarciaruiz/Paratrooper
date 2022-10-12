@@ -1,5 +1,6 @@
 #ifndef TROOPER_H
 #define TROOPER_H
+#include <list>
 #include "raylib.h"
 #include "global.h"
 
@@ -35,6 +36,32 @@ public:
 	void Trooper::Draw();
 	void Trooper::Destroy();
 	void Trooper::UnloadTextures();
+};
+
+class TrooperPool
+{
+private:
+	std::list<Trooper*> troopers{};
+public:
+	Trooper* TrooperPool::GetItem()
+	{
+		if (troopers.empty())
+		{
+			Trooper* trooper = new Trooper();
+			return trooper;
+		}
+		else
+		{
+			Trooper* trooper = troopers.front();
+			troopers.pop_front();
+			return trooper;
+		}
+	}
+
+	void TrooperPool::ReturnItem(Trooper* trooper)
+	{
+		troopers.push_back(trooper);
+	}
 };
 
 #endif

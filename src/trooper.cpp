@@ -61,7 +61,8 @@ bool Trooper::ReloadTexture()
 
 void Trooper::Draw()
 {
-	DrawTextureEx(_texture, _position, 0.0f, 1.0f, WHITE);
+	if(_isAlive)
+		DrawTextureEx(_texture, _position, 0.0f, 1.0f, WHITE);
 }
 
 void Trooper::Destroy()

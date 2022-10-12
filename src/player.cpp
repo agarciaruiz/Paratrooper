@@ -59,7 +59,7 @@ void Player::Init(Vector2 basePosition)
     _laserSound = LoadSound("resources/Music/shoot.wav");
 }
 
-void Player::Update(std::vector<Helicopter*> helicopters, std::vector<Trooper*> troopers)
+void Player::Update(std::list<Helicopter*> helicopters, std::list<Trooper*> troopers)
 {
     int dir;
     if (IsKeyDown(KEY_A))

@@ -23,7 +23,7 @@ public:
 	Vector2 Bullet::Direction() const;
 
 	void Bullet::Init(Vector2 position, Vector2 direction);
-	void Bullet::Update(std::vector<Helicopter*> helicopters, std::vector<Trooper*> troopers);
+	void Bullet::Update(std::list<Helicopter*> helicopters, std::list<Trooper*> troopers);
 	bool Bullet::IsOutOfScreen();
 	void Bullet::Draw();
 };

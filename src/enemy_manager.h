@@ -1,6 +1,5 @@
 #ifndef ENEMY_MANAGER_H
 #define ENEMY_MANAGER_H
-#include <vector>
 #include "helicopter.h"
 #include "trooper.h"
 
@@ -8,12 +7,14 @@ class EnemyManager
 {
 private:
 	// Helicopter settings
-	std::vector<Helicopter*> _helicopters{};
+	HelicopterPool helicoptersPool {};
+	std::list<Helicopter*> _helicopters {};
 	float timer;
 	float helicopterSpawnTime;
 
 	// Trooper settings
-	std::vector<Trooper*> _troopers{};
+	TrooperPool troopersPool{};
+	std::list<Trooper*> _troopers{};
 	float trooperTimer;
 	int _landedTroopers;
 
@@ -29,8 +30,8 @@ private:
 
 public:
 	int EnemyManager::LandedTroopers() const;
-	std::vector<Helicopter*> EnemyManager::Helicopters() const;
-	std::vector<Trooper*> EnemyManager::Troopers() const;
+	std::list<Helicopter*> EnemyManager::Helicopters() const;
+	std::list<Trooper*> EnemyManager::Troopers() const;
 
 	void EnemyManager::Init();
 	void EnemyManager::Update();

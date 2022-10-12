@@ -14,24 +14,23 @@ void Bullet::Init(Vector2 position, Vector2 direction)
 	_trooperHit = false;
 }
 
-void Bullet::Update(std::vector<Helicopter*> helicopters, std::vector<Trooper*> troopers)
+void Bullet::Update(std::list<Helicopter*> helicopters, std::list<Trooper*> troopers)
 {
-	// if colision con helicoptero -> hit = true
-	for (int i = 0; i < helicopters.size(); i++)
+	for(Helicopter* helicopter : helicopters)
 	{
-		if (helicopters[i]->IsAlive() && CheckCollisionCircleRec(_position, _radius, helicopters[i]->Bounds()))
+		if (helicopter->IsAlive() && CheckCollisionCircleRec(_position, _radius, helicopter->Bounds()))
 		{
 			_helicopterHit = true;
-			helicopters[i]->Destroy();
+			helicopter->Destroy();
 		}
 	}
 
-	for (int i = 0; i < troopers.size(); i++)
+	for (Trooper* trooper : troopers)
 	{
-		if (troopers[i]->IsAlive() && CheckCollisionCircleRec(_position, _radius, troopers[i]->Bounds()))
+		if (trooper->IsAlive() && CheckCollisionCircleRec(_position, _radius, trooper->Bounds()))
 		{
 			_trooperHit = true;
-			troopers[i]->Destroy();
+			trooper->Destroy();
 		}
 	}
 

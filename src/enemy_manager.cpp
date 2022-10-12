@@ -1,8 +1,8 @@
 #include "enemy_manager.h"
 
 int EnemyManager::LandedTroopers() const { return _landedTroopers; }
-std::vector<Helicopter*> EnemyManager::Helicopters() const { return _helicopters; }
-std::vector<Trooper*> EnemyManager::Troopers() const { return _troopers; }
+std::list<Helicopter*> EnemyManager::Helicopters() const { return _helicopters; }
+std::list<Trooper*> EnemyManager::Troopers() const { return _troopers; }
 
 void EnemyManager::Init()
 {
@@ -19,7 +19,8 @@ void EnemyManager::Update()
 	// Helicopter spawn, move and destroy
 	HelicopterRoutine();
 	// Update && Destroy trooper
-	TrooperRoutine();
+	if(!_troopers.empty())
+		TrooperRoutine();
 }
 
 void EnemyManager::Draw()
@@ -31,17 +32,17 @@ void EnemyManager::Draw()
 void EnemyManager::Reset()
 {
 	_landedTroopers = 0;
-	for (int i = 0; i < _helicopters.size(); i++)
+	for(Helicopter* helicopter : _helicopters)
 	{
-		_helicopters[i]->UnloadTextures();
-		delete(_helicopters[i]);
+		helicopter->UnloadTextures();
+		helicoptersPool.ReturnItem(helicopter);
 	}
 	_helicopters.clear();
 
-	for (int i = 0; i < _troopers.size(); i++)
+	for(Trooper* trooper : _troopers)
 	{
-		_troopers[i]->UnloadTextures();
-		delete(_troopers[i]);
+		trooper->UnloadTextures();
+		troopersPool.ReturnItem(trooper);
 	}
 	_troopers.clear();
 }
@@ -55,7 +56,7 @@ Helicopter* EnemyManager::SpawnHelicopter()
 
 void EnemyManager::SpawnTrooper(Helicopter* helicopter)
 {
-	Trooper* trooper = new Trooper();
+	Trooper* trooper = troopersPool.GetItem();
 	trooper->Init(helicopter->Position());
 	_troopers.push_back(trooper);
 	helicopter->DropTrooper();
@@ -66,7 +67,7 @@ void EnemyManager::HelicopterRoutine()
 	timer += GetFrameTime();
 	if (timer >= helicopterSpawnTime)
 	{
-		_helicopters.push_back(SpawnHelicopter());
+		_helicopters.push_back(helicoptersPool.GetItem());
 		helicopterSpawnTime = GetRandomValue(3, 5);
 		timer = 0;
 	}
@@ -75,22 +76,22 @@ void EnemyManager::HelicopterRoutine()
 
 void EnemyManager::MoveHelicopters()
 {
-	for (int i = 0; i < _helicopters.size(); i++)
+	for(Helicopter* helicopter : _helicopters)
 	{
-		if (_helicopters[i]->IsAlive() || !_helicopters[i]->IsOutOfScreen())
+		if (helicopter->IsAlive() || helicopter->IsOutOfScreen())
 		{
-			if (_helicopters[i]->HasTrooper() && _helicopters[i]->TimeOut())
+			if (helicopter->HasTrooper() && helicopter->TimeOut())
 			{
-				SpawnTrooper(_helicopters[i]);
+				SpawnTrooper(helicopter);
 			}
-			_helicopters[i]->Move();
+			helicopter->Move();
 		}
 		else
 		{
-			if (!_helicopters[i]->ReloadTexture())
+			if (helicopter->ReloadTexture())
 			{
-				delete(_helicopters[i]);
-				_helicopters.erase(std::remove(_helicopters.begin(), _helicopters.end(), _helicopters[i]), _helicopters.end());
+				helicoptersPool.ReturnItem(helicopter);
+				_helicopters.remove(helicopter);
 			}
 		}
 	}
@@ -98,23 +99,23 @@ void EnemyManager::MoveHelicopters()
 
 void EnemyManager::TrooperRoutine()
 {
-	for (int i = 0; i < _troopers.size(); i++)
+	for(Trooper* trooper : _troopers)
 	{
-		if (_troopers[i]->IsAlive())
+		if(trooper->IsAlive())
 		{
-			_troopers[i]->Update();
-			if (_troopers[i]->IsGrounded() && !_troopers[i]->previouslyGrounded)
+			trooper->Update();
+			if(trooper->IsGrounded() && !trooper->previouslyGrounded)
 			{
 				_landedTroopers++;
-				_troopers[i]->PreviouslyGrounded(true);
+				trooper->PreviouslyGrounded(true);
 			}
 		}
 		else
 		{
-			if (_troopers[i]->ReloadTexture())
+			if(trooper->ReloadTexture())
 			{
-				delete(_troopers[i]);
-				_troopers.erase(std::remove(_troopers.begin(), _troopers.end(), _troopers[i]), _troopers.end());
+				troopersPool.ReturnItem(trooper);
+				_troopers.remove(trooper);
 			}
 		}
 	}
@@ -122,16 +123,16 @@ void EnemyManager::TrooperRoutine()
 
 void EnemyManager::DrawHelicopters()
 {
-	for (int i = 0; i < _helicopters.size(); i++)
+	for(Helicopter* helicopter : _helicopters)
 	{
-		_helicopters[i]->Draw();
+		helicopter->Draw();
 	}
 }
 
 void EnemyManager::DrawTroopers()
 {
-	for (int i = 0; i < _troopers.size(); i++)
+	for(Trooper* trooper : _troopers)
 	{
-		_troopers[i]->Draw();
+		trooper->Draw();
 	}
 }
