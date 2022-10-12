@@ -18,7 +18,7 @@ private:
 	Rectangle Trooper::GetBounds();
 
 public:
-	bool _previouslyGrounded;
+	bool previouslyGrounded;
 	bool Trooper::IsFalling() const;
 	bool Trooper::IsGrounded() const;
 	void Trooper::PreviouslyGrounded(bool value);

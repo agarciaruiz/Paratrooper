@@ -5,10 +5,9 @@ Rectangle Trooper::GetBounds()
 	return Rectangle{ _position.x, _position.y, (float)_texture.width, (float)_texture.height };
 }
 
-bool _previouslyGrounded = false;
 bool Trooper::IsFalling() const { return _isFalling; }
 bool Trooper::IsGrounded() const { return _isGrounded; }
-void Trooper::PreviouslyGrounded(bool value) { _previouslyGrounded = value; }
+void Trooper::PreviouslyGrounded(bool value) { previouslyGrounded = value; }
 bool Trooper::IsAlive() const { return _isAlive; }
 Texture2D Trooper::Texture() const { return _texture; }
 Vector2 Trooper::Position() const { return _position; }
@@ -24,7 +23,7 @@ void Trooper::Init(Vector2 position)
 	_isGrounded = false;
 	_isAlive = true;
 	_reloadTextureTimer = 0;
-	_previouslyGrounded = false;
+	previouslyGrounded = false;
 }
 
 void Trooper::FollowHelicopter(Vector2 position)

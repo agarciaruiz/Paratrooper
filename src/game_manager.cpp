@@ -116,7 +116,7 @@ void GameManager::TrooperRoutine()
 		if (troopers[i]->IsAlive())
 		{
 			troopers[i]->Update();
-			if (troopers[i]->IsGrounded() && !troopers[i]->_previouslyGrounded)
+			if (troopers[i]->IsGrounded() && !troopers[i]->previouslyGrounded)
 			{
 				_landedTroopers++;
 				troopers[i]->PreviouslyGrounded(true);
