@@ -1,7 +1,6 @@
 #ifndef GAME_MANAGER_H
 #define GAME_MANAGER_H
 #include <time.h>
-#include <vector>
 #include "raylib.h"
 #include "player.hpp"
 #include "bullet.h"
