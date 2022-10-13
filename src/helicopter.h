@@ -21,7 +21,7 @@ private:
 	Sound _explosion;
 
 	float _reloadTextureTimer;
-	bool _reloadTexture;
+	bool _textureReloaded;
 
 	// Trooper vars
 	float _spawnTimeout;
@@ -42,13 +42,13 @@ public:
 	bool Helicopter::IsAlive() const;
 	bool Helicopter::HasTrooper() const;
 	bool Helicopter::TimeOut() const;
-	bool Helicopter::ReloadTexture() const;
+	bool Helicopter::TextureReloaded() const;
+	bool Helicopter::OutOfScreen();
 
 	void Helicopter::Init();
 	void Helicopter::Move();
+	void Helicopter::ReloadTexture();
 	void Helicopter::DropTrooper();
-	void Helicopter::Deactivate();
-	bool Helicopter::IsOutOfScreen();
 	void Helicopter::Draw();
 	void Helicopter::Destroy();
 	void Helicopter::UnloadTextures();

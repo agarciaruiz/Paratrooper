@@ -68,6 +68,7 @@ void Trooper::Draw()
 void Trooper::Destroy()
 {
 	_texture = LoadTexture("resources/Enemies/Dead.png");
+	WaitTime(0.5f);
 	_isAlive = false;
 }
 

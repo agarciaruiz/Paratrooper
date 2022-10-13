@@ -76,22 +76,26 @@ void EnemyManager::HelicopterRoutine()
 
 void EnemyManager::MoveHelicopters()
 {
-	for(Helicopter* helicopter : _helicopters)
+	std::list<Helicopter*>::iterator it = _helicopters.begin();
+	while (it != _helicopters.end())
 	{
-		if (helicopter->IsAlive() || helicopter->IsOutOfScreen())
+		Helicopter* helicopter = (*it);
+		if (helicopter->IsAlive() || !helicopter->OutOfScreen())
 		{
 			if (helicopter->HasTrooper() && helicopter->TimeOut())
 			{
 				SpawnTrooper(helicopter);
 			}
 			helicopter->Move();
+			++it;
 		}
 		else
 		{
-			if (helicopter->ReloadTexture())
+			if (helicopter->TextureReloaded())
 			{
+				helicopter->UnloadTextures();
 				helicoptersPool.ReturnItem(helicopter);
-				_helicopters.remove(helicopter);
+				_helicopters.erase(it++);
 			}
 		}
 	}
@@ -117,6 +121,7 @@ void EnemyManager::TrooperRoutine()
 		{
 			if(trooper->ReloadTexture())
 			{
+				trooper->UnloadTextures();
 				troopersPool.ReturnItem(trooper);
 				_troopers.erase(it++);
 			}

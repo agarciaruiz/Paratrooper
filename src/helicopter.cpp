@@ -6,7 +6,7 @@ Vector2 Helicopter::Position() const { return _position; }
 bool Helicopter::IsAlive() const { return _isAlive; }
 bool Helicopter::HasTrooper() const { return _hasTrooper; }
 bool Helicopter::TimeOut() const { return _timeOut; };
-bool Helicopter::ReloadTexture() const { return _reloadTexture; };
+bool Helicopter::TextureReloaded() const { return _textureReloaded; };
 
 float Helicopter::RandomSide()
 {
@@ -69,7 +69,7 @@ void Helicopter::Init()
 	_hasTrooper = true;
 
 	_reloadTextureTimer = 0;
-	_reloadTexture = false;
+	_textureReloaded = false;
 	_spawnTimer = 0;
 	_timeOut = false;
 
@@ -78,7 +78,7 @@ void Helicopter::Init()
 
 void Helicopter::Move()
 {
-	if (_isAlive)
+	if(_isAlive)
 	{
 		// If is left side, moove right
 		if (_leftSided)
@@ -98,9 +98,16 @@ void Helicopter::Move()
 	}
 	else
 	{
-		_reloadTextureTimer += GetFrameTime();
-		if (_reloadTextureTimer >= 0.5f)
-			_reloadTexture = true;
+		ReloadTexture();
+	}
+}
+
+void Helicopter::ReloadTexture()
+{
+	_reloadTextureTimer += GetFrameTime();
+	if (_reloadTextureTimer >= 0.5f)
+	{
+		_textureReloaded = true;
 	}
 }
 
@@ -109,12 +116,7 @@ void Helicopter::DropTrooper()
 	_hasTrooper = false;
 }
 
-void Helicopter::Deactivate()
-{
-	_isAlive = false;
-}
-
-bool Helicopter::IsOutOfScreen()
+bool Helicopter::OutOfScreen()
 {
 	if (_leftSided && _position.x >= SCR_WIDTH)
 	{
@@ -129,9 +131,8 @@ bool Helicopter::IsOutOfScreen()
 
 void Helicopter::Draw()
 {
-	if (_reloadTexture) return;
-	if(_isAlive)
-		DrawTextureEx(_texture, _position, 0.0f, 1.0f, WHITE);
+	if (_textureReloaded) return;
+	DrawTextureEx(_texture, _position, 0.0f, 1.0f, WHITE);
 }
 
 void Helicopter::Destroy()
@@ -139,7 +140,7 @@ void Helicopter::Destroy()
 	PlaySound(_explosion);
 	_texture = LoadTexture("resources/Enemies/Dead.png");
 	RecenterTexture();
-	Deactivate();
+	_isAlive = false;
 }
 
 void Helicopter::UnloadTextures()
