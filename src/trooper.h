@@ -15,6 +15,7 @@ private:
 	bool _isGrounded;
 	bool _isAlive;
 	float _reloadTextureTimer;
+	bool _textureReloaded;
 
 	Rectangle Trooper::GetBounds();
 
@@ -24,15 +25,15 @@ public:
 	bool Trooper::IsGrounded() const;
 	void Trooper::PreviouslyGrounded(bool value);
 	bool Trooper::IsAlive() const;
+	bool Trooper::TextureReloaded() const;
 	Texture2D Trooper::Texture() const;
 	Vector2 Trooper::Position() const;
 	Rectangle Trooper::Bounds() const;
 
 	void Trooper::Init(Vector2 position);
 	void Trooper::FollowHelicopter(Vector2 position);
-	void Trooper::Update();
 	void Trooper::Fall();
-	bool Trooper::ReloadTexture();
+	void Trooper::ReloadTexture();
 	void Trooper::Draw();
 	void Trooper::Destroy();
 	void Trooper::UnloadTextures();

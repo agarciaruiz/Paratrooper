@@ -107,9 +107,9 @@ void EnemyManager::TrooperRoutine()
 	while(it != _troopers.end())
 	{
 		Trooper* trooper = (*it);
-		if (trooper->IsAlive())
+		if(trooper->IsAlive() || !trooper->IsGrounded())
 		{
-			trooper->Update();
+			trooper->Fall();
 			if(trooper->IsGrounded() && !trooper->previouslyGrounded)
 			{
 				_landedTroopers++;
@@ -119,7 +119,7 @@ void EnemyManager::TrooperRoutine()
 		}
 		else
 		{
-			if(trooper->ReloadTexture())
+			if(trooper->TextureReloaded())
 			{
 				trooper->UnloadTextures();
 				troopersPool.ReturnItem(trooper);

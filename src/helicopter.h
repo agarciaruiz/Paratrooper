@@ -35,6 +35,7 @@ private:
 	Texture2D Helicopter::GetTextureFromSide(float side);
 	Vector2 Helicopter::StartingPos();
 	void Helicopter::SetSide();
+	void Helicopter::ReloadTexture();
 
 public:
 	Rectangle Helicopter::Bounds() const;
@@ -47,7 +48,6 @@ public:
 
 	void Helicopter::Init();
 	void Helicopter::Move();
-	void Helicopter::ReloadTexture();
 	void Helicopter::DropTrooper();
 	void Helicopter::Draw();
 	void Helicopter::Destroy();

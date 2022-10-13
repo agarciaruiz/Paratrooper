@@ -106,9 +106,7 @@ void Helicopter::ReloadTexture()
 {
 	_reloadTextureTimer += GetFrameTime();
 	if (_reloadTextureTimer >= 0.5f)
-	{
 		_textureReloaded = true;
-	}
 }
 
 void Helicopter::DropTrooper()
