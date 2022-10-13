@@ -2,18 +2,19 @@
 #define ENEMY_MANAGER_H
 #include "helicopter.h"
 #include "trooper.h"
+#include "pool.h"
 
 class EnemyManager
 {
 private:
 	// Helicopter settings
-	HelicopterPool helicoptersPool {};
+	Pool<Helicopter> helicoptersPool {};
 	std::list<Helicopter*> _helicopters {};
 	float timer;
 	float helicopterSpawnTime;
 
 	// Trooper settings
-	TrooperPool troopersPool{};
+	Pool<Trooper> troopersPool{};
 	std::list<Trooper*> _troopers{};
 	float trooperTimer;
 	int _landedTroopers;

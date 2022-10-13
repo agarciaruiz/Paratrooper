@@ -8,6 +8,7 @@
 #include "screen.hpp"
 #include "bullet.h"
 #include "helicopter.h"
+#include "pool.h"
 
 class Player {
 private:
@@ -22,7 +23,8 @@ private:
 
     Texture2D _bodyTexture;
     Texture2D _turretTexture;
-    std::vector<Bullet*> bullets {};
+    Pool<Bullet> bulletsPool{};
+    std::list<Bullet*> bullets {};
     Sound _laserSound;
 
     Bullet* Player::SpawnBullet();

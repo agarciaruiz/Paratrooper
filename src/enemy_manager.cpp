@@ -66,7 +66,9 @@ void EnemyManager::HelicopterRoutine()
 	timer += GetFrameTime();
 	if (timer >= helicopterSpawnTime)
 	{
-		_helicopters.push_back(helicoptersPool.GetItem());
+		Helicopter* helicopter = helicoptersPool.GetItem();
+		helicopter->Init();
+		_helicopters.push_back(helicopter);
 		helicopterSpawnTime = GetRandomValue(3, 5);
 		timer = 0;
 	}

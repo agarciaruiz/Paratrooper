@@ -2,7 +2,7 @@
 
 Bullet* Player::SpawnBullet()
 {
-    Bullet* bullet = new Bullet();
+    Bullet* bullet = bulletsPool.GetItem();
     float radians = _turretRotation * (PI / 180);
     Vector2 direction = { sin(radians), cos(radians) };
     bullet->Init(_turretPosition, direction);
@@ -77,27 +77,32 @@ void Player::Update(std::list<Helicopter*> helicopters, std::list<Trooper*> troo
         Shoot();
     }
 
-    for (int i = 0; i < bullets.size(); i++)
+    std::list<Bullet*>::iterator it = bullets.begin();
+    while (it != bullets.end())
     {
-        bullets[i]->Update(helicopters, troopers);
+        Bullet* bullet = (*it);
+        if (bullet->IsOutOfScreen() || bullet->HelicopterHit() || bullet->TrooperHit())
+        {
+            bulletsPool.ReturnItem(bullet);
+            bullets.erase(it++);
+        }
+        else
+        {
+            bullet->Update(helicopters, troopers);
 
-        if (bullets[i]->HelicopterHit())
-        {
-            _score += 10;
-        }
-        else if (bullets[i]->TrooperHit())
-        {
-            _score += 5;
-        }
-        else if (bullets[i]->IsOutOfScreen() && _score != 0)
-        {
-            _score -= 1;
-        }
-
-        if (bullets[i]->IsOutOfScreen() || bullets[i]->HelicopterHit() || bullets[i]->TrooperHit())
-        {
-            delete(bullets[i]);
-            bullets.erase(std::remove(bullets.begin(), bullets.end(), bullets[i]), bullets.end());
+            if (bullet->HelicopterHit())
+            {
+                _score += 10;
+            }
+            else if (bullet->TrooperHit())
+            {
+                _score += 5;
+            }
+            else if (bullet->IsOutOfScreen() && _score != 0)
+            {
+                _score -= 1;
+            }
+            ++it;
         }
     }
 }
@@ -113,9 +118,9 @@ void Player::Draw()
     // Draw base
     DrawTextureEx(_bodyTexture, _basePosition, 0.0f, 1.0f, WHITE);
 
-    for (int i = 0; i < bullets.size(); i++)
+    for (Bullet* bullet : bullets)
     {
-        bullets[i]->Draw();
+        bullet->Draw();
     }
 }
 

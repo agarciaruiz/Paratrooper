@@ -54,33 +54,5 @@ public:
 	void Helicopter::Unload();
 };
 
-class HelicopterPool 
-{
-private:
-	std::list<Helicopter*> helicopters{};
-public:
-	Helicopter* HelicopterPool::GetItem()
-	{
-		if(helicopters.empty())
-		{
-			Helicopter* helicopter = new Helicopter();
-			helicopter->Init();
-			return helicopter;
-		}
-		else
-		{
-			Helicopter* helicopter = helicopters.front();
-			helicopter->Init();
-			helicopters.pop_front();
-			return helicopter;
-		}
-	}
-
-	void HelicopterPool::ReturnItem(Helicopter* helicopter)
-	{
-		helicopters.push_back(helicopter);
-	}
-};
-
 #endif // !HELICOPTER_H
 

@@ -179,6 +179,7 @@
     <ClInclude Include="..\src\helicopter.h" />
     <ClInclude Include="..\src\logo_screen.hpp" />
     <ClInclude Include="..\src\player.hpp" />
+    <ClInclude Include="..\src\pool.h" />
     <ClInclude Include="..\src\screen.hpp" />
     <ClInclude Include="..\src\main.hpp" />
     <ClInclude Include="..\src\title_screen.hpp" />
