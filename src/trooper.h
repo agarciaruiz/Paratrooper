@@ -18,22 +18,19 @@ private:
 	bool _textureReloaded;
 
 	Rectangle Trooper::GetBounds();
+	void Trooper::ReloadTexture();
 
 public:
 	bool previouslyGrounded;
-	bool Trooper::IsFalling() const;
 	bool Trooper::IsGrounded() const;
 	void Trooper::PreviouslyGrounded(bool value);
 	bool Trooper::IsAlive() const;
 	bool Trooper::TextureReloaded() const;
-	Texture2D Trooper::Texture() const;
 	Vector2 Trooper::Position() const;
 	Rectangle Trooper::Bounds() const;
 
 	void Trooper::Init(Vector2 position);
-	void Trooper::FollowHelicopter(Vector2 position);
 	void Trooper::Fall();
-	void Trooper::ReloadTexture();
 	void Trooper::Draw();
 	void Trooper::Destroy();
 	void Trooper::UnloadTextures();

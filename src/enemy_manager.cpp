@@ -19,8 +19,7 @@ void EnemyManager::Update()
 	// Helicopter spawn, move and destroy
 	HelicopterRoutine();
 	// Update && Destroy trooper
-	if(!_troopers.empty())
-		TrooperRoutine();
+	TrooperRoutine();
 }
 
 void EnemyManager::Draw()
@@ -34,7 +33,7 @@ void EnemyManager::Reset()
 	_landedTroopers = 0;
 	for(Helicopter* helicopter : _helicopters)
 	{
-		helicopter->UnloadTextures();
+		helicopter->Unload();
 		helicoptersPool.ReturnItem(helicopter);
 	}
 	_helicopters.clear();
@@ -93,7 +92,7 @@ void EnemyManager::MoveHelicopters()
 		{
 			if (helicopter->TextureReloaded())
 			{
-				helicopter->UnloadTextures();
+				helicopter->Unload();
 				helicoptersPool.ReturnItem(helicopter);
 				_helicopters.erase(it++);
 			}

@@ -196,7 +196,7 @@ static void UpdateDrawFrame()
             {
                 optionsScreen.Update();
 
-                if (optionsScreen.FinishScreen()) TransitionToScreen(TITLE);
+                if (optionsScreen.FinishScreen() == 2) TransitionToScreen(TITLE);
 
             } break;
             case GAMEPLAY:

@@ -51,7 +51,7 @@ public:
 	void Helicopter::DropTrooper();
 	void Helicopter::Draw();
 	void Helicopter::Destroy();
-	void Helicopter::UnloadTextures();
+	void Helicopter::Unload();
 };
 
 class HelicopterPool 
@@ -70,6 +70,7 @@ public:
 		else
 		{
 			Helicopter* helicopter = helicopters.front();
+			helicopter->Init();
 			helicopters.pop_front();
 			return helicopter;
 		}

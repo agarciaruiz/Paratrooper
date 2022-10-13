@@ -102,11 +102,6 @@ void Player::Update(std::list<Helicopter*> helicopters, std::list<Trooper*> troo
     }
 }
 
-void Player::SetScore(int score)
-{
-    _score += score;
-}
-
 void Player::Draw()
 {
     // Draw turret
@@ -127,11 +122,8 @@ void Player::Draw()
 void Player::Reset()
 {
     UnloadSound(_laserSound);
-    UnloadTextures();
-    _score = 0;
-}
-
-void Player::UnloadTextures() {
     UnloadTexture(_bodyTexture);
     UnloadTexture(_turretTexture);
+    _score = 0;
+    _turretRotation = 0;
 }

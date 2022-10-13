@@ -141,8 +141,8 @@ void Helicopter::Destroy()
 	_isAlive = false;
 }
 
-void Helicopter::UnloadTextures()
+void Helicopter::Unload()
 {
+	UnloadSound(_explosion);
 	UnloadTexture(_texture);
 }
-

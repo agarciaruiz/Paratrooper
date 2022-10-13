@@ -40,9 +40,7 @@ public:
 
     void Player::Init(Vector2 basePosition);
     void Player::Update(std::list<Helicopter*> helicopters, std::list<Trooper*> troopers);
-    void Player::SetScore(int score);
     void Player::Draw();
     void Player::Reset();
-    void Player::UnloadTextures();
 };
 #endif

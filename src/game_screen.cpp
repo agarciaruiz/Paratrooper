@@ -8,6 +8,8 @@ void GameScreen::ResetScreen()
 
 void GameScreen::Init()
 {
+	framesCounter = 0;
+	finishScreen = 0;
 	_gameManager.Init();
 }
 
