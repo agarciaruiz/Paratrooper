@@ -40,4 +40,4 @@ public:
 	void EnemyManager::Reset();
 };
 
-#endif;
+#endif
